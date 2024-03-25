@@ -57,7 +57,7 @@ CHECK_TEXT_ON_SCREEN(theInputSearchText, theMillisecondsBetweenRetries, theTryLi
 	;DISPLAY_MESSAGE("Looking for " . theInputSearchText)
 	Loop, %theTryLimit% {
 		myScreenText := GET_SCREEN_TEXT(theCoordinatesObject.getTopLeftX(), theCoordinatesObject.getTopLeftY(), theCoordinatesObject.getBottomRightX(), theCoordinatesObject.getBottomRightY())
-		DISPLAY_MESSAGE(myScreenText)
+		;DISPLAY_MESSAGE(myScreenText)
 		if(RegExMatch(myScreenText, theInputSearchText) > 0){
 			myFoundTextFlag := true
 			break
