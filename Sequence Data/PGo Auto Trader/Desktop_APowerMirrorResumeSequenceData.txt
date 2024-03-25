@@ -1,0 +1,80 @@
+{
+	"sequenceLoopLimit": 1,
+	"stepList": [
+		{
+			"elementName": "Reconnect",
+			"checkExistsTryLimitIntervalList": [1, 15, 1],
+			"millisecondsBetweenRetries": 2000,
+			"textCheckObject": {
+				"searchText": "Reconnect",
+				"topLeftX": 902,
+				"topLeftY": 573,
+				"bottomRightX": 1010,
+				"bottomRightY": 601
+			},
+			"tapX": "967",
+			"tapY": "588",
+			"millisecondsWaitAfter": 1500
+		},
+		{
+			"elementName": "USB Connection",
+			"checkExistsTryLimitIntervalList": [1, 15, 15, 15, 1],
+			"millisecondsBetweenRetries": 500,
+			"textCheckObject": {
+				"searchText": "USB Connection",
+				"topLeftX": 927,
+				"topLeftY": 521,
+				"bottomRightX": 1054,
+				"bottomRightY": 544
+			},
+			"tapX": "1054",
+			"tapY": "544",
+			"millisecondsWaitAfter": 1500
+		},
+		{
+			"elementName": "Select device",
+			"checkExistsTryLimitIntervalList": [1, 15, 15, 15, 1],
+			"millisecondsBetweenRetries": 500,
+			"textCheckObject": {
+				"searchText": "Select",
+				"topLeftX": 1,
+				"topLeftY": 1,
+				"bottomRightX": 1,
+				"bottomRightY": 1
+			},
+			"tapX": "1",
+			"tapY": "1",
+			"millisecondsWaitAfter": 1500
+		},
+		{
+			"elementName": "APowerMirror active screen",
+			"checkExistsTryLimitIntervalList": [1, 15, 15, 1],
+			"millisecondsBetweenRetries": 1000,
+			"textCheckObject": {
+				"searchText": "USB mirroring to",
+				"topLeftX": 879,
+				"topLeftY": 220,
+				"bottomRightX": 1043,
+				"bottomRightY": 243
+			},
+			"tapX": "1097",
+			"tapY": "1005",
+			"millisecondsWaitAfter": 1500
+		},
+		{
+			"elementName": "App switch screen",
+			"checkExistsTryLimitIntervalList": [1, 15, 15, 15, 1],
+			"millisecondsBetweenRetries": 500,
+			"textCheckObject": {
+				"searchText": "USB mirroring to",
+				"topLeftX": 892,
+				"topLeftY": 789,
+				"bottomRightX": 1032,
+				"bottomRightY": 813
+			},
+			"tapX": "1097",
+			"tapY": "1005",
+			"millisecondsWaitAfter": 1500
+		}
+	]
+}

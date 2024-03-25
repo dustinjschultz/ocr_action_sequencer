@@ -1,0 +1,20 @@
+{
+	"sequenceLoopLimit": 1,
+	"stepList": [
+		{
+			"elementName": "New Record",
+			"checkExistsTryLimitIntervalList": [1, 10, 10, 1],
+			"millisecondsBetweenRetries": 500,
+			"textCheckObject": {
+				"searchText": "New.*",
+				"topLeftX": 804,
+				"topLeftY": 611,
+				"bottomRightX": 1113,
+				"bottomRightY": 644
+			},
+			"tapX": "963",
+			"tapY": "908",
+			"millisecondsWaitAfter": 500
+		}
+	]
+}

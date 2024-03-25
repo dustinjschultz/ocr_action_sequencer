@@ -1,0 +1,49 @@
+{
+	"stepList": [
+		{
+			"elementName": "Select the device",
+			"checkExistsTryLimitIntervalList": [1, 15, 1],
+			"millisecondsBetweenRetries": 2000,
+			"textCheckObject": {
+				"searchText": "Select",
+				"topLeftX": 822,
+				"topLeftY": 298,
+				"bottomRightX": 891,
+				"bottomRightY": 327
+			},
+			"tapX": "957",
+			"tapY": "457",
+			"millisecondsWaitAfter": 1500
+		},
+		{
+			"elementName": "APowerMirror active screen",
+			"checkExistsTryLimitIntervalList": [1, 15, 15, 1],
+			"millisecondsBetweenRetries": 2000,
+			"textCheckObject": {
+				"searchText": "USB mirroring to",
+				"topLeftX": 864,
+				"topLeftY": 239,
+				"bottomRightX": 1042,
+				"bottomRightY": 268
+			},
+			"tapX": "1089",
+			"tapY": "1000",
+			"millisecondsWaitAfter": 1500
+		},
+		{
+			"elementName": "App switch screen",
+			"checkExistsTryLimitIntervalList": [1, 15, 1],
+			"millisecondsBetweenRetries": 2000,
+			"textCheckObject": {
+				"searchText": "USB mirroring to",
+				"topLeftX": 887,
+				"topLeftY": 786,
+				"bottomRightX": 1032,
+				"bottomRightY": 85
+			},
+			"tapX": "1089",
+			"tapY": "1000",
+			"millisecondsWaitAfter": 1500
+		}
+	]
+}

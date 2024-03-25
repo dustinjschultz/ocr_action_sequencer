@@ -1,0 +1,17 @@
+
+**Before initial git commit**
+Extract the config to separate files, retrived via keys [DONE] 
+Change the HANDLE_APOWERMIRROR_TIMEOUTS being directly in EXECUTE_TRADE_STEP to be something like HANDLE_GLOBAL_INTERRUPT_SEQUENCE [DONE]
+Refactor out any references to trading [DONE]
+Rename "tradeLimit" to "sequenceLoopLimit" and put it into the other config files [DONE]
+Refactor any references to C: to the top (seen in GET_SCREEN_TEXT for sure) [DONE]
+Make a proper class for the trade step object definitions [UNTESTED]
+Move external dependencies to a libraries subfolder
+
+
+**Eventually**
+Visual box drawn around where it's spying
+Helper for the box drawing and text setting
+UI to view your sequences
+Optional toggle between software clicks and hardware clicks - so it can run on a screen without needing to be the only thing running
+Proper logging instead of DISPLAY_MESSAGE
