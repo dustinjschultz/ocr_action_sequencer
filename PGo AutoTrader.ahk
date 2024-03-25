@@ -60,7 +60,7 @@ CHECK_TEXT_ON_SCREEN(theInputSearchText, theMillisecondsBetweenRetries, theTryLi
 	Loop, %theTryLimit% {
 		myScreenText := GET_SCREEN_TEXT(theCoordinatesObject.getTopLeftX(), theCoordinatesObject.getTopLeftY(), theCoordinatesObject.getBottomRightX(), theCoordinatesObject.getBottomRightY())
 		;DISPLAY_MESSAGE(myScreenText)
-		if(DOES_TEXT_CONTAIN(myScreenText, theInputSearchText)){
+		if (DOES_TEXT_CONTAIN(myScreenText, theInputSearchText)) {
 			myFoundTextFlag := true
 			break
 		}
@@ -92,7 +92,7 @@ EXECUTE_SEQUENCE_STEP(theStepList, the1IndexedStepOrdinal, theIsOriginalTryFlag)
 	; use a local copy of the checkExistsIntervalList, since we may make changes
 	myCheckExistsIntervalList := myStep.getCheckExistsTryLimitIntervalList().clone()
 
-	if(!theIsOriginalTryFlag) {
+	if (!theIsOriginalTryFlag) {
 		myCheckExistsIntervalList := []
 		myCheckExistsIntervalList.Push(1)
 		;DISPLAY_MESSAGE("Overwrote checkExistsTryLimitIntervalList")
@@ -105,11 +105,11 @@ EXECUTE_SEQUENCE_STEP(theStepList, the1IndexedStepOrdinal, theIsOriginalTryFlag)
 		; https://www.autohotkey.com/docs/v1/Variables.htm#Index
 		myCheckExistsTryLimit := myCheckExistsIntervalList[A_Index]
 		myCheckTextResult := CHECK_TEXT_ON_SCREEN(myStep.getTextCheck().getSearchText(), myStep.getMillisecondsBetweenRetries(), myCheckExistsTryLimit, myStep.getTextCheck())
-		if(myCheckTextResult){
+		if (myCheckTextResult) {
 			break
 		} else {
 			myIsLastIntervalFlag := A_Index == myCheckExistsIntervalCount
-			if(theIsOriginalTryFlag AND !myIsLastIntervalFlag){
+			if (theIsOriginalTryFlag AND !myIsLastIntervalFlag) {
 				;DISPLAY_MESSAGE("Retrying previous step")
 				myPreviousStepOrdinal := GET_PREVIOUS_STEP_ORDINAL(the1IndexedStepOrdinal, theStepList.Length())
 				myRetryPreviousResult := EXECUTE_SEQUENCE_STEP(theStepList, myPreviousStepOrdinal, false)
@@ -119,12 +119,12 @@ EXECUTE_SEQUENCE_STEP(theStepList, the1IndexedStepOrdinal, theIsOriginalTryFlag)
 		}
 	}
 
-	if(myCheckTextResult){
+	if (myCheckTextResult) {
 		myExecuteResult := true
 		CLICK_HELPER(myStep.getTapX(), myStep.getTapY())
 	}
 
-	if(myExecuteResult){
+	if (myExecuteResult) {
 		mySleep := myStep.getMillisecondsWaitAfter()
 		Sleep, %mySleep%
 	}
@@ -142,7 +142,7 @@ DISPLAY_MESSAGE(theMessage){
 GET_PREVIOUS_STEP_ORDINAL(theCurrentStepOrdinal, theStepTotal){
 	; 1-Indexed
 	myReturn := theCurrentStepOrdinal - 1
-	if(myReturn < 1){
+	if (myReturn < 1) {
 		myReturn := theStepTotal
 	}
 	return myReturn
@@ -163,11 +163,11 @@ EXECUTE_SEQUENCE_UNTIL_CAP(theSequenceDataStringRelativePath){
 		;DISPLAY_MESSAGE(mySequenceLoopCounter)
 
 		myCurrentStepCounter := 0
-		while(myCurrentStepCounter < myStepListSize) {
+		while (myCurrentStepCounter < myStepListSize) {
 			myCurrentStepCounter++
 			Sleep, 100
 			myStepResult := EXECUTE_SEQUENCE_STEP(mySequenceData.getStepList(), myCurrentStepCounter, true)
-			if(!myStepResult){
+			if (!myStepResult) {
 				DISPLAY_MESSAGE("Failed, ending early")
 				exitapp
 			}
@@ -184,8 +184,8 @@ HANDLE_GLOBAL_INTERRUPT_SINGLE(theGlobalInteruptSequenceDataRelativePath){
 	myTotalStepCount := mySequenceData.getStepList().Length()
 	myCheckTextResult := CHECK_TEXT_ON_SCREEN(myFirstStep.getTextCheck().getSearchText(), myFirstStep.getMillisecondsBetweenRetries(), 1, myFirstStep.getTextCheck())
 
-	if(myCheckTextResult){
-		while(myCurrentStepCounter <= myTotalStepCount){
+	if (myCheckTextResult) {
+		while (myCurrentStepCounter <= myTotalStepCount) {
 			myCurrentStepCounter++
 			EXECUTE_SEQUENCE_STEP(mySequenceData.getStepList(), myCurrentStepCounter, true)
 		}
@@ -201,7 +201,7 @@ HANDLE_GLOBAL_INTERRUPT_ALL(){
 
 READ_FILE_CONTENTS(theFileName, theDirectory := ""){
 	global CONSTANT_DEFAULT_FILE_DIRECTORY
-	if (theDirectory == ""){
+	if (theDirectory == "") {
 		theDirectory := CONSTANT_DEFAULT_FILE_DIRECTORY
 	}
 
