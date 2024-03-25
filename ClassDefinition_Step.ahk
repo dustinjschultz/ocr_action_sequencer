@@ -1,28 +1,5 @@
 #Include %A_ScriptDir%\ClassDefinition_TextCheck.ahk
 
-;~ 0::
-	; test function
-	;~ myTestStep := new Step()
-
-	;~ myTestStep.setCheckExistsTryLimitIntervalList([1, 10, 100])
-	;~ MsgBox % myTestStep.getCheckExistsTryLimitIntervalList()[3]
-	;~ myTestStep.setElementName("newElementName")
-	;~ MsgBox % myTestStep.getElementName()
-	;~ myTestStep.setMillisecondsBetweenRetries(222)
-	;~ MsgBox % myTestStep.getMillisecondsBetweenRetries()
-	;~ myTestStep.SetMillisecondsWaitAfter(333)
-	;~ MsgBox % myTestStep.getMillisecondsWaitAfter()
-	;~ myTestStep.setTapX(444)
-	;~ MsgBox % myTestStep.getTapX()
-	;~ myTestStep.setTapY(555)
-	;~ MsgBox % myTestStep.getTapY()
-
- 	;~ myTestTextCheck := new TextCheck()
-	;~ myTestTextCheck.setTopLeftY(123)
-	;~ myTestStep.setTextCheck(myTestTextCheck)
-	;~ MsgBox % myTestStep.getTextCheck().getTopLeftY()
-;~ return
-
 Class Step {
 
 	; TODO: figure out how to enforce types on these properties
@@ -39,7 +16,7 @@ Class Step {
 
 	;;;;;;;;;; Constructors ;;;;;;;;;;
 	__New() {
-		; __New is the constructor keywork in AHK https://www.autohotkey.com/docs/v2/Objects.htm#Custom_NewDelete
+		; __New is the constructor keyword in AHK https://www.autohotkey.com/docs/v2/Objects.htm#Custom_NewDelete
 	}
 
 
