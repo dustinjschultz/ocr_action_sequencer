@@ -156,11 +156,11 @@ EXECUTE_SEQUENCE_UNTIL_CAP(theSequenceDataStringRelativePath){
 		mySequenceLoopCounter++
 		;DISPLAY_MESSAGE(mySequenceLoopCounter)
 
-		myCurrentStep := 0
-		while(myCurrentStep < myStepListSize) {
-			myCurrentStep++
+		myCurrentStepCounter := 0
+		while(myCurrentStepCounter < myStepListSize) {
+			myCurrentStepCounter++
 			Sleep, 100
-			myStepResult := EXECUTE_SEQUENCE_STEP(mySequenceData.getStepList(), myCurrentStep, true)
+			myStepResult := EXECUTE_SEQUENCE_STEP(mySequenceData.getStepList(), myCurrentStepCounter, true)
 			if(!myStepResult){
 				DISPLAY_MESSAGE("Failed, ending early")
 				exitapp
