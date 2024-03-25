@@ -6,7 +6,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include %A_ScriptDir%\AutoHotkey-JSON-master\JSON.ahk
 #Include %A_ScriptDir%\ClassDefinition_SequenceData.ahk
 
-CONSTANT_DEFAULT_FILE_DIRECTORY := "C:\git\temp OCR Action Sequencer\Sequence Data\"
+CONSTANT_DEFAULT_FILE_DIRECTORY := "C:\git\ocr_action_sequencer\Sequence Data\"
 ;CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Laptop_PGoNewSizeRecordPopupSequenceData.txt"]
 CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Desktop_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Desktop_PGoNewSizeRecordPopupSequenceData.txt"]
 CONSTANT_CAPTURE_2_TEXT_EXECUTABLE_ABSOLUTE_PATH := "C:\Users\dusti\OneDrive\Desktop\Capture2Text\Capture2Text.exe"
@@ -43,7 +43,9 @@ return
 	;HANDLE_GLOBAL_INTERRUPT_SINGLE("PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt")
 	;HANDLE_GLOBAL_INTERRUPT_ALL()
 
-	LOAD_SEQUENCE_DATA_FROM_JSON_STRING(READ_FILE_CONTENTS("PGo Auto Trader\Laptop_PGoAutoTradeSequenceData.txt"))
+	;LOAD_SEQUENCE_DATA_FROM_JSON_STRING(READ_FILE_CONTENTS("PGo Auto Trader\Laptop_PGoAutoTradeSequenceData.txt"))
+
+	EXECUTE_SEQUENCE_UNTIL_CAP("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
 return
 
 
@@ -58,7 +60,7 @@ CHECK_TEXT_ON_SCREEN(theInputSearchText, theMillisecondsBetweenRetries, theTryLi
 	Loop, %theTryLimit% {
 		myScreenText := GET_SCREEN_TEXT(theCoordinatesObject.getTopLeftX(), theCoordinatesObject.getTopLeftY(), theCoordinatesObject.getBottomRightX(), theCoordinatesObject.getBottomRightY())
 		;DISPLAY_MESSAGE(myScreenText)
-		if(RegExMatch(myScreenText, theInputSearchText) > 0){
+		if(DOES_TEXT_CONTAIN(myScreenText, theInputSearchText)){
 			myFoundTextFlag := true
 			break
 		}
@@ -66,6 +68,10 @@ CHECK_TEXT_ON_SCREEN(theInputSearchText, theMillisecondsBetweenRetries, theTryLi
 	}
 
 	return myFoundTextFlag
+}
+
+DOES_TEXT_CONTAIN(theHaystackString, theNeedleString){
+	return RegExMatch(theHaystackString, theNeedleString) > 0
 }
 
 GET_SCREEN_TEXT(theTopLeftX, theTopLeftY, theBottomRightX, theBottomRightY){
