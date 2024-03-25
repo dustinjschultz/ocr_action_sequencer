@@ -52,7 +52,7 @@ CLICK_HELPER(theXCoordinate, theYCoordinate){
 	Click, %theXCoordinate% %theYCoordinate%
 }
 
-GENERALIZED_CHECK_TEXT_ON_SCREEN(theInputSearchText, theMillisecondsBetweenRetries, theTryLimit, theCoordinatesObject){
+CHECK_TEXT_ON_SCREEN(theInputSearchText, theMillisecondsBetweenRetries, theTryLimit, theCoordinatesObject){
 	myFoundTextFlag := false
 	;DISPLAY_MESSAGE("Looking for " . theInputSearchText)
 	Loop, %theTryLimit% {
@@ -98,7 +98,7 @@ EXECUTE_SEQUENCE_STEP(theStepList, the1IndexedStepOrdinal, theIsOriginalTryFlag)
 		; Reminder: "A_Index" is the built-in AutoHotkey index for loops
 		; https://www.autohotkey.com/docs/v1/Variables.htm#Index
 		myCheckExistsTryLimit := myCheckExistsIntervalList[A_Index]
-		myCheckTextResult := GENERALIZED_CHECK_TEXT_ON_SCREEN(myStep.getTextCheck().getSearchText(), myStep.getMillisecondsBetweenRetries(), myCheckExistsTryLimit, myStep.getTextCheck())
+		myCheckTextResult := CHECK_TEXT_ON_SCREEN(myStep.getTextCheck().getSearchText(), myStep.getMillisecondsBetweenRetries(), myCheckExistsTryLimit, myStep.getTextCheck())
 		if(myCheckTextResult){
 			break
 		} else {
@@ -176,7 +176,7 @@ HANDLE_GLOBAL_INTERRUPT_SINGLE(theGlobalInteruptSequenceDataRelativePath){
 
 	myCurrentStepCounter := 0 ; we want to use 1-indexed, so start at 0 then increment right away in the loop
 	myTotalStepCount := mySequenceData.getStepList().Length()
-	myCheckTextResult := GENERALIZED_CHECK_TEXT_ON_SCREEN(myFirstStep.getTextCheck().getSearchText(), myFirstStep.getMillisecondsBetweenRetries(), 1, myFirstStep.getTextCheck())
+	myCheckTextResult := CHECK_TEXT_ON_SCREEN(myFirstStep.getTextCheck().getSearchText(), myFirstStep.getMillisecondsBetweenRetries(), 1, myFirstStep.getTextCheck())
 
 	if(myCheckTextResult){
 		while(myCurrentStepCounter <= myTotalStepCount){
