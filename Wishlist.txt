@@ -10,6 +10,7 @@ Move external dependencies to a libraries subfolder
 
 
 **Eventually**
+Move wishlist file to proper location in github
 Visual box drawn around where it's spying
 Helper for the box drawing and text setting
 UI to view your sequences
