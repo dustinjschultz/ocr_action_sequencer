@@ -5,6 +5,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #Include %A_ScriptDir%\AutoHotkey-JSON-master\JSON.ahk
 #Include %A_ScriptDir%\ClassDefinition_SequenceData.ahk
+#Include %A_ScriptDir%\Noncore Helpers\Misc helpers.ahk
 
 CONSTANT_DEFAULT_FILE_DIRECTORY := "C:\git\ocr_action_sequencer\Sequence Data\"
 ;CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Laptop_PGoNewSizeRecordPopupSequenceData.txt"]
@@ -41,11 +42,11 @@ return
 	;EXECUTE_SEQUENCE_STEP(myTemp.stepList, 1, true)
 
 	;HANDLE_GLOBAL_INTERRUPT_SINGLE("PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt")
-	HANDLE_GLOBAL_INTERRUPT_ALL()
+	;HANDLE_GLOBAL_INTERRUPT_ALL()
 
 	;LOAD_SEQUENCE_DATA_FROM_JSON_STRING(READ_FILE_CONTENTS("PGo Auto Trader\Laptop_PGoAutoTradeSequenceData.txt"))
 
-	;EXECUTE_SEQUENCE_UNTIL_CAP("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
+	EXECUTE_SEQUENCE_UNTIL_CAP("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
 return
 
 
@@ -68,10 +69,6 @@ CHECK_TEXT_ON_SCREEN(theInputSearchText, theMillisecondsBetweenRetries, theTryLi
 	}
 
 	return myFoundTextFlag
-}
-
-DOES_TEXT_CONTAIN(theHaystackString, theNeedleString){
-	return RegExMatch(theHaystackString, theNeedleString) > 0
 }
 
 GET_SCREEN_TEXT(theTopLeftX, theTopLeftY, theBottomRightX, theBottomRightY){
@@ -130,13 +127,6 @@ EXECUTE_SEQUENCE_STEP(theStepList, the1IndexedStepOrdinal, theIsOriginalTryFlag)
 	}
 
 	return myExecuteResult
-}
-
-DISPLAY_MESSAGE(theMessage){
-	TrayTip ; hide previous
-	Sleep, 1
-	TrayTip, OCR_Action_Sequencer, %theMessage%, 1
-	;MsgBox, %theMessage%
 }
 
 GET_PREVIOUS_STEP_ORDINAL(theCurrentStepOrdinal, theStepTotal){
@@ -198,18 +188,6 @@ HANDLE_GLOBAL_INTERRUPT_ALL(){
 	for myIndex in CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST {
 		HANDLE_GLOBAL_INTERRUPT_SINGLE(CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST[myIndex])
 	}
-}
-
-READ_FILE_CONTENTS(theFileName, theDirectory := ""){
-	global CONSTANT_DEFAULT_FILE_DIRECTORY
-	if (theDirectory == "") {
-		theDirectory := CONSTANT_DEFAULT_FILE_DIRECTORY
-	}
-
-	; use the built-in FileOpen method https://www.autohotkey.com/docs/v1/lib/FileOpen.htm
-	myFile := FileOpen(theDirectory . theFileName, "r") ; using read-only flag
-	myFileContents := myFile.Read()
-	return myFileContents
 }
 
 LOAD_SEQUENCE_DATA_FROM_JSON_STRING(theJsonString){
