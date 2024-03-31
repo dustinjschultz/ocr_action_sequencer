@@ -1,4 +1,6 @@
-*.bak # IDE backup files
+# IDE backup files
+*.bak
+**/*.bak 
 
 # Ignore /Sequence Data/ minus the Test folder
 /Sequence Data/*
