@@ -42,11 +42,11 @@ return
 	;EXECUTE_SEQUENCE_STEP(myTemp.stepList, 1, true)
 
 	;HANDLE_GLOBAL_INTERRUPT_SINGLE("PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt")
-	;HANDLE_GLOBAL_INTERRUPT_ALL()
+	HANDLE_GLOBAL_INTERRUPT_ALL()
 
 	;LOAD_SEQUENCE_DATA_FROM_JSON_STRING(READ_FILE_CONTENTS("PGo Auto Trader\Laptop_PGoAutoTradeSequenceData.txt"))
 
-	EXECUTE_SEQUENCE_UNTIL_CAP("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
+	;EXECUTE_SEQUENCE_UNTIL_CAP("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
 return
 
 
