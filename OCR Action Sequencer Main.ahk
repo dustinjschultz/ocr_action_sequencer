@@ -3,7 +3,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-#Include %A_ScriptDir%\AutoHotkey-JSON-master\JSON.ahk
+#Include %A_ScriptDir%\External Dependencies\AutoHotkey-JSON-master\JSON.ahk
 #Include %A_ScriptDir%\ClassDefinition_SequenceData.ahk
 #Include %A_ScriptDir%\Noncore Helpers\Misc helpers.ahk
 
