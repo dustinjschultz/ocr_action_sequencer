@@ -9,12 +9,12 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 CONSTANT_DEFAULT_FILE_DIRECTORY := "C:\git\ocr_action_sequencer\Sequence Data\"
 ;CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Laptop_PGoNewSizeRecordPopupSequenceData.txt"]
-CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Desktop_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Desktop_PGoNewSizeRecordPopupSequenceData.txt"]
+CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Desktop_SP20Tablet_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Desktop_SP20Tablet_PGoNewSizeRecordPopupSequenceData.txt"]
 CONSTANT_CAPTURE_2_TEXT_EXECUTABLE_ABSOLUTE_PATH := "C:\Users\dusti\OneDrive\Desktop\Capture2Text\Capture2Text.exe"
 
 
 \::
-	EXECUTE_SEQUENCE_UNTIL_CAP("PGo Auto Trader\Desktop_PGoAutoTradeSequenceData.txt")
+	EXECUTE_SEQUENCE_UNTIL_CAP("PGo Auto Trader\Desktop_SP20Tablet_PGoAutoTradeSequenceData.txt")
 return
 
 0::
@@ -41,12 +41,12 @@ return
 	;myTemp := JSON.Load(myDebugFileContents)
 	;EXECUTE_SEQUENCE_STEP(myTemp.stepList, 1, true)
 
-	;HANDLE_GLOBAL_INTERRUPT_SINGLE("PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt")
+	HANDLE_GLOBAL_INTERRUPT_SINGLE("PGo Auto Trader\Desktop_SP20Tablet_APowerMirrorResumeSequenceData.txt")
 	;HANDLE_GLOBAL_INTERRUPT_ALL()
 
 	;LOAD_SEQUENCE_DATA_FROM_JSON_STRING(READ_FILE_CONTENTS("PGo Auto Trader\Laptop_PGoAutoTradeSequenceData.txt"))
 
-	EXECUTE_SEQUENCE_UNTIL_CAP("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
+	;EXECUTE_SEQUENCE_UNTIL_CAP("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
 return
 
 
