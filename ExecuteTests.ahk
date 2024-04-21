@@ -5,8 +5,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 
 
-#Include %A_ScriptDir%\tests\Automated Unit Tests\Misc helpers tests.ahk
-#Include %A_ScriptDir%\tests\Automated Unit Tests\OCR Action Sequencer Main tests.ahk
+#Include %A_ScriptDir%\tests\Automated Unit Tests\MiscHelpersTests.ahk
+#Include %A_ScriptDir%\tests\Automated Unit Tests\OCRActionSequencerMainTests.ahk
 ;Include %A_ScriptDir%\tests\Automated Unit Tests\SampleTest1.ahk ; don't use this one unless testing the tests, it has an intentional fail
 
 
