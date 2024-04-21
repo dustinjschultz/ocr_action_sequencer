@@ -83,7 +83,7 @@ class JSON
 					; the 'IsArray' property. If so, Array() will be called normally,
 					; otherwise, use a custom base object for arrays
 						static json_array := Func("Array").IsBuiltIn || ![].IsArray ? {IsArray: true} : 0
-					
+
 					; sacrifice readability for minor(actually negligible) performance gain
 						(ch == "{")
 							? ( is_key := true
@@ -92,12 +92,12 @@ class JSON
 						; ch == "["
 							: ( value := json_array ? new json_array : []
 							  , next := json_value_or_array_closing )
-						
+
 						ObjInsertAt(stack, 1, value)
 
 						if (this.keys)
 							this.keys[value] := []
-					
+
 					} else {
 						if (ch == quot) {
 							i := pos
@@ -121,7 +121,7 @@ class JSON
 							, value := StrReplace(value,  "\t", "`t")
 
 							pos := i ; update pos
-							
+
 							i := 0
 							while (i := InStr(value, "\",, i+1)) {
 								if !(SubStr(value, i+1, 1) == "u")
@@ -136,7 +136,7 @@ class JSON
 								key := value, next := ":"
 								continue
 							}
-						
+
 						} else {
 							value := SubStr(text, pos, i := RegExMatch(text, "[\]\},\s]|$",, pos)-pos)
 
@@ -166,7 +166,7 @@ class JSON
 					if (this.keys && this.keys.HasKey(holder))
 						this.keys[holder].Push(key)
 				}
-			
+
 			} ; while ( ... )
 
 			return this.rev ? this.Walk(root, "") : root[""]
@@ -175,7 +175,7 @@ class JSON
 		ParseError(expect, ByRef text, pos, len:=1)
 		{
 			static quot := Chr(34), qurly := quot . "}"
-			
+
 			line := StrSplit(SubStr(text, 1, pos), "`n", "`r").Length()
 			col := pos - InStr(text, "`n",, -(StrLen(text)-pos+1))
 			msg := Format("{1}`n`nLine:`t{2}`nCol:`t{3}`nChar:`t{4}"
@@ -208,7 +208,7 @@ class JSON
 						ObjDelete(value, k)
 				}
 			}
-			
+
 			return this.rev.Call(holder, key, value)
 		}
 	}
@@ -267,7 +267,7 @@ class JSON
 					is_array := value.IsArray
 				; Array() is not overridden, rollback to old method of
 				; identifying array-like objects. Due to the use of a for-loop
-				; sparse arrays such as '[1,,3]' are detected as objects({}). 
+				; sparse arrays such as '[1,,3]' are detected as objects({}).
 					if (!is_array) {
 						for i in value
 							is_array := i == A_Index
@@ -279,7 +279,7 @@ class JSON
 						Loop, % value.Length() {
 							if (this.gap)
 								str .= this.indent
-							
+
 							v := this.Str(value, A_Index)
 							str .= (v != "") ? v . "," : "null,"
 						}
@@ -307,7 +307,7 @@ class JSON
 
 					return is_array ? "[" . str . "]" : "{" . str . "}"
 				}
-			
+
 			} else ; is_number ? value : "value"
 				return ObjGetCapacity([value], 1)=="" ? value : this.Quote(value)
 		}

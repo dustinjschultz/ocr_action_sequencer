@@ -3,52 +3,30 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-#Include %A_ScriptDir%\External Dependencies\AutoHotkey-JSON-master\JSON.ahk
-#Include %A_ScriptDir%\ClassDefinition_SequenceData.ahk
-#Include %A_ScriptDir%\Noncore Helpers\Misc helpers.ahk
+GLOBAL_BASE_DIRECTORY := "C:\git\ocr_action_sequencer"
+
+;#Include %A_ScriptDir%\External Dependencies\AutoHotkey-JSON-master\JSON.ahk
+;#Include %A_ScriptDir%\ClassDefinition_SequenceData.ahk
+;#Include %A_ScriptDir%\Noncore Helpers\Misc helpers.ahk
+
+;MsgBox % A_ScriptDir
+
+;INCLUDE_FILES(){
+	;global GLOBAL_BASE_DIRECTORY
+	myCurrentScriptDirectory := A_ScriptDir
+	SetWorkingDir GLOBAL_BASE_DIR
+	#Include %A_WorkingDir%\External Dependencies\AutoHotkey-JSON-master\JSON.ahk
+	#Include %A_WorkingDir%\ClassDefinition_SequenceData.ahk
+	#Include %A_WorkingDir%\Noncore Helpers\Misc helpers.ahk
+	SetWorkingDir myCurrentScriptDirectory
+;}
+
+;INCLUDE_FILES()
 
 CONSTANT_DEFAULT_FILE_DIRECTORY := "C:\git\ocr_action_sequencer\Sequence Data\"
 ;CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Laptop_PGoNewSizeRecordPopupSequenceData.txt"]
 CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Desktop_SP20Tablet_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Desktop_SP20Tablet_PGoNewSizeRecordPopupSequenceData.txt"]
 CONSTANT_CAPTURE_2_TEXT_EXECUTABLE_ABSOLUTE_PATH := "C:\Users\dusti\OneDrive\Desktop\Capture2Text\Capture2Text.exe"
-
-
-\::
-	EXECUTE_SEQUENCE_UNTIL_CAP("PGo Auto Trader\Desktop_SP20Tablet_PGoAutoTradeSequenceData.txt")
-return
-
-0::
-	; random debug stuff
-
-	;myTemp := GET_NEW_RECORD_CONFIG_OBJECT()
-	;DISPLAY_MESSAGE(myTemp.stepList[1].elementName)
-	;EXECUTE_SEQUENCE_STEP(myTemp.stepList, 1, true)
-	;EXECUTE_SEQUENCE_STEP(myTemp.stepList, 2, true)
-	;EXECUTE_SEQUENCE_STEP(myTemp.stepList, 3, true)
-	;EXECUTE_SEQUENCE_STEP(myTemp.stepList, 4, true)
-	;EXECUTE_SEQUENCE_STEP(myTemp.stepList, 5, true)
-
-	;myCoordinateObject := myTemp.stepList[5].textCheckObject
-	;myResult := GET_SCREEN_TEXT(myCoordinateObject.topLeftX, myCoordinateObject.topLeftY, myCoordinateObject.bottomRightX, myCoordinateObject.bottomRightY)
-
-	;HANDLE_APOWERMIRROR_TIMEOUTS()
-	;HANDLE_NEW_RECORD()
-
-	;myDebugFileContents := READ_FILE_CONTENTS("TestTextFile.txt")
-	;DISPLAY_MESSAGE(myDebugFileContents)
-
-	;myDebugFileContents := READ_FILE_CONTENTS("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt", "C:\git\temp OCR Action Sequencer\Sequence Data\")
-	;myTemp := JSON.Load(myDebugFileContents)
-	;EXECUTE_SEQUENCE_STEP(myTemp.stepList, 1, true)
-
-	HANDLE_GLOBAL_INTERRUPT_SINGLE("PGo Auto Trader\Desktop_SP20Tablet_APowerMirrorResumeSequenceData.txt")
-	;HANDLE_GLOBAL_INTERRUPT_ALL()
-
-	;LOAD_SEQUENCE_DATA_FROM_JSON_STRING(READ_FILE_CONTENTS("PGo Auto Trader\Laptop_PGoAutoTradeSequenceData.txt"))
-
-	;EXECUTE_SEQUENCE_UNTIL_CAP("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
-return
-
 
 CLICK_HELPER(theXCoordinate, theYCoordinate){
 	CoordMode, Mouse, Screen
