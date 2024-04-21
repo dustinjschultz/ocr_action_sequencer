@@ -4,7 +4,7 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #Include %A_ScriptDir%\External Dependencies\expect.ahk-master\export.ahk
-#Include %A_ScriptDir%\OCR Action Sequencer Main.ahk ; TODO: interesting, this breaks because the main file now uses THIS file for its own A_ScriptDir
+#Include %A_ScriptDir%\OCR Action Sequencer Main.ahk
 
 myExpect := new expect()
 
