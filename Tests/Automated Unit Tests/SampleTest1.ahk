@@ -3,10 +3,10 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-#Include %A_ScriptDir%\..\..\External Dependencies\expect.ahk-master\export.ahk
+#Include %A_ScriptDir%\External Dependencies\expect.ahk-master\export.ahk
 
-expect := new expect()
+myExpect := new expect()
 
-expect.equal("this should succeed", "this should succeed")
-expect.equal("aaa", "this should fail")
-expect.fullReport()
+myExpect.equal("this should succeed", "this should succeed")
+myExpect.equal("aaa", "this is an expected failure to demo the results")
+myExpect.fullReport()
