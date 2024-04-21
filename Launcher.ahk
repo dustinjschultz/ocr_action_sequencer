@@ -5,7 +5,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #Include %A_ScriptDir%\OCR Action Sequencer Main.ahk
 
-; We need this file so that the actual main file doesn't contain hotkeys so that we can test it.
+; We need this file so that the actual main file doesn't contain hotkeys so that we #Include it in our tests.
 ; Otherwise the #Include usages start acting funky.
 
 \::
