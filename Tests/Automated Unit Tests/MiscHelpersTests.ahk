@@ -36,7 +36,7 @@ myExpect.false(DOES_TEXT_CONTAIN("abcde", "abe"))
 
 ;;;;; READ_FILE_CONTENTS ;;;;;
 myExpect.label("READ_FILE_CONTENTS basic test")
-myFilePath := A_ScriptDir . "\Tests\Automated Unit Tests\"
+myFilePath := A_ScriptDir . "\Tests\Test Files\"
 myExpect.equal("TestFileContents", READ_FILE_CONTENTS("TestInputFile.txt", myFilePath))
 
 

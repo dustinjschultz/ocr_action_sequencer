@@ -46,7 +46,7 @@ myExpect.equal(10, GET_PREVIOUS_STEP_ORDINAL(1, 10)) ; the step before 1 (the fi
 
 ;;;;; LOAD_SEQUENCE_DATA_FROM_JSON_STRING ;;;;;
 myExpect.label("LOAD_SEQUENCE_DATA_FROM_JSON_STRING basic test")
-myFilePath := A_ScriptDir . "\Tests\Automated Unit Tests\"
+myFilePath := A_ScriptDir . "\Tests\Test Files\"
 myJsonString := READ_FILE_CONTENTS("MinimizeSciTE4AutoHotkeyPlusSequenceData.txt", myFilePath)
 myTestSequenceData := LOAD_SEQUENCE_DATA_FROM_JSON_STRING(myJsonString)
 myExpect.equal(1, myTestSequenceData.getSequenceLoopLimit())
