@@ -75,15 +75,36 @@ if(myMaximizePromptResult){
 myExpect.true(myActionSequenceMinimizePromptResult)
 
 
+myExpect.label("EXECUTE_SEQUENCE_STEP - theIsOriginalTryFlag = false to override checkExistsIntervalList")
+; So this test is interesting. We don't have a perfect way to detect whether the intended behavior is happening.
+; When theIsOriginalTryFlag = false, we expect checkExistsIntervalList to be overriden to just [1].
+; We'll take advantage of the fact that checkExistsIntervalList controls a loop with some other waits.
+; So first we'll do a call without it overriden, then a follow-up call that we expect to take significantly
+; less time because of less iterations. However we can't be 100% confident in the timing, since along the way
+; it calls to an external dependency (the image OCR part) which takes a variable amount of time.
 
+myMultipleAttemptsTestSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([5])
+mySingleAttemptTestSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1])
+mySingleAttemptTestSequenceData.getStepList()[1].getTextCheck().setSearchText("this will never be found")
+myMultipleAttemptsTestSequenceData.getStepList()[1].getTextCheck().setSearchText("this will never be found")
 
+; don't put breakpoints in these chunks since A_TickCount would count those as processing time
+myMultipleAttemptsStartTime := A_TickCount
+EXECUTE_SEQUENCE_STEP(myMultipleAttemptsTestSequenceData.getStepList(), 1, true)
+myMultipleAttemptsEndTime := A_TickCount
+myMultipleAttemptsDuration := myMultipleAttemptsEndTime - myMultipleAttemptsStartTime
 
+mySingleAttemptsStartTime := A_TickCount
+EXECUTE_SEQUENCE_STEP(mySingleAttemptTestSequenceData.getStepList(), 1, true)
+mySingleAttemptsEndTime := A_TickCount
+mySingleAttemptsDuration := mySingleAttemptsEndTime - mySingleAttemptsStartTime
+
+myExpect.true(mySingleAttemptsDuration * 4 < myMultipleAttemptsDuration) ; multiply by one less than the actual attempts to absorb the variance of a single call
 
 
 
 
 myExpect.fullReport()
-
 
 
 
@@ -103,9 +124,10 @@ TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE(theCheckExistsTryLimitInter
 	myTestTextCheck := new TextCheck()
 	myTestTextCheck.setBottomRightX(900)
 	myTestTextCheck.setBottomRightY(20)
-	myTestTextCheck.setSearchText(".*SciTE4AutoHotkey.*")
+	myTestTextCheck.setSearchText(".*SciTE4AutoHotkey.*|.*SCiTE4AutoHotkey.*") ; c capitalization difference is needed
 	myTestTextCheck.setTopLeftX(20)
 	myTestTextCheck.settopLeftY(0)
 	myTestMinimizeSciteStep.setTextCheck(myTestTextCheck)
 	myTestMinimizeSciteSequenceData.getStepList().push(myTestMinimizeSciteStep)
+	return myTestMinimizeSciteSequenceData
 }
