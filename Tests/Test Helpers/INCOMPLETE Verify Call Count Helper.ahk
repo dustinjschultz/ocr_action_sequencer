@@ -3,9 +3,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
-; TODO: Test and flesh this out.
-
-; ChatGPT made asked for a Mockito.verify-like way to test code in AHK.
+; ChatGPT was asked for a Mockito.verify-like way to test code in AHK, with some tweaking
 
 ; Define a global variable to track the call count
 Global CallCount := {}
@@ -20,6 +18,7 @@ MyFunction()
 ; Mock function to intercept calls
 MockFunction(funcName, params*)
 {
+    ;MsgBox % "MockFunction called for " . funcName
     Global CallCount
     ; Increment the call count for the specified function
     CallCount[funcName] := (CallCount[funcName] == null ? 0 : CallCount[funcName]) + 1
@@ -46,7 +45,16 @@ MyFunctionCallable := myMockFunctionObject.Bind(myFunctionObjectName)
 MyFunctionCallable.call() ; Call the function
 MyFunctionCallable.call() ; Call the function again
 
-; Verify call count
-VerifyCallCount(Func("MyFunction").Name, 2) ; Verify MyFunction was called 2 times
+MyFunction() ; calling the actual function rather than the wrapper doesn't actually contribute to the counter...
 
-VerifyCallCount(Func("MyFunction").Name, 10) ; Expecting this to fail
+; Verify call count
+VerifyCallCount(Func("MyFunction").Name, 2) ; Verify MyFunction was called (via mock) 2 times
+
+VerifyCallCount(Func("MyFunction").Name, 10) ; Expecting this to fail, regardless of mock/non-mock working
+
+; The above works to add a wrapper that counts calls to your original function.
+; But isn't helpful yet since we can't override the original definition to use the wrapper's.
+; Overriding a function definition of these globally defined functions isn't proving fruitful...
+; So for now, just going to mark this as INCOMPLETE and move on without it.
+
+
