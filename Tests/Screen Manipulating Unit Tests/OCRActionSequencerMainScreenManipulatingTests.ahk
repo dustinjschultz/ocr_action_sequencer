@@ -10,7 +10,7 @@ myExpect := new expect()
 
 ; TODO Methods
 ; CLICK_HELPER - DONE
-; EXECUTE_SEQUENCE_STEP - test the different parameter combos
+; EXECUTE_SEQUENCE_STEP - DONE
 ; EXECUTE_SEQUENCE_UNTIL_CAP
 ; HANDLE_GLOBAL_INTERRUPT_SINGLE
 ; HANDLE_GLOBAL_INTERRUPT_ALL
@@ -102,6 +102,37 @@ mySingleAttemptsDuration := mySingleAttemptsEndTime - mySingleAttemptsStartTime
 myExpect.true(mySingleAttemptsDuration * 4 < myMultipleAttemptsDuration) ; multiply by one less than the actual attempts to absorb the variance of a single call
 
 
+;;;;; EXECUTE_SEQUENCE_UNTIL_CAP ;;;;;
+myExpect.label("EXECUTE_SEQUENCE_UNTIL_CAP - minimize then maximize twice")
+
+MsgBox, This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button then maximize via a Sequence twice
+SetTitleMatchMode, 2 ; partial matches
+WinMaximize, ahk_class SciTEWindow
+
+MsgBox, 4,, "Did SciTE4AutoHotkey maximize?" ; 4 = Yes/No
+myMaximizePromptResult := false
+IfMsgBox Yes
+	myMaximizePromptResult := true
+else
+	myMaximizePromptResult := false
+
+myActionSequenceTwiceMinimizePromptResult := false
+
+if(myMaximizePromptResult){
+	; Time to get creative again. Since all we have (at time of writing) is text-based conditionals,
+	; we really don't have a reliable way to set up a loop-able test scenario. So we'll have the sequence
+	; itself perform its own setup by having it maximize itself after minimizing. The hard part is we don't
+	; have a great way to maximize via click, since we don't know exactly where the SciTE4AutoHotkey's
+	; icon will be in the task bar because of how many things may be open... This test will assume it's
+	; the 7th because that's typically where it is with all my pins.
+	myTestSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1, 10, 10, 1])
+	myWindowsTimeTextCheck := TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK()
+	myWindowsTimeStep := TEST_HELPER_BUILD_STEP([5], "SciTE4AutoHotkey icon in task bar probably", 100, 100, 700, 1050, myWindowsTimeTextCheck)
+	myTestSequenceData.getStepList().push(myWindowsTimeStep)
+	; TODO: Make a non-path-paramter version of this method ;EXECUTE_SEQUENCE_UNTIL_CAP
+}
+
+myExpect.false("TODO: finish this test and its assertions.")
 
 
 myExpect.fullReport()
@@ -114,20 +145,35 @@ TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE(theCheckExistsTryLimitInter
 	myTestMinimizeSciteSequenceData := new SequenceData()
 	myTestMinimizeSciteSequenceData.setSequenceLoopLimit(1)
 	myTestMinimizeSciteSequenceData.setStepList([])
-	myTestMinimizeSciteStep := new Step()
-	myTestMinimizeSciteStep.setCheckExistsTryLimitIntervalList(theCheckExistsTryLimitIntervalList)
-	myTestMinimizeSciteStep.setElementName("SciTE4AutoHotkey title bar")
-	myTestMinimizeSciteStep.setMillisecondsBetweenRetries(100)
-	myTestMinimizeSciteStep.setMillisecondsWaitAfter(500)
-	myTestMinimizeSciteStep.setTapX(1806)
-	myTestMinimizeSciteStep.setTapY(3)
-	myTestTextCheck := new TextCheck()
-	myTestTextCheck.setBottomRightX(900)
-	myTestTextCheck.setBottomRightY(20)
-	myTestTextCheck.setSearchText(".*SciTE4AutoHotkey.*|.*SCiTE4AutoHotkey.*") ; c capitalization difference is needed
-	myTestTextCheck.setTopLeftX(20)
-	myTestTextCheck.settopLeftY(0)
-	myTestMinimizeSciteStep.setTextCheck(myTestTextCheck)
+	myTestTextCheck := TEST_HELPER_BUILD_TEXT_CHECK(900, 20, ".*SciTE4AutoHotkey.*|.*SCiTE4AutoHotkey.*", 20, 0)
+	myTestMinimizeSciteStep := TEST_HELPER_BUILD_STEP(theCheckExistsTryLimitIntervalList, "SciTE4AutoHotkey title bar", 100, 500, 1806, 3, myTestTextCheck)
 	myTestMinimizeSciteSequenceData.getStepList().push(myTestMinimizeSciteStep)
 	return myTestMinimizeSciteSequenceData
+}
+
+TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK(){
+	return TEST_HELPER_BUILD_TEXT_CHECK(1864, 1060, "AM|PM", 1801, 1041)
+}
+
+; TODO: move these helpers somewhere common, OCRActionSequencerMainTests could use them too
+TEST_HELPER_BUILD_STEP(theCheckExistsTryLimitIntervalList, theElementName, theMillisecondsBetweenRetries, theMillisecondsWaitAfter, theTapX, theTapY, theTextCheck){
+	myReturnStep := new Step()
+	myReturnStep.setCheckExistsTryLimitIntervalList(theCheckExistsTryLimitIntervalList)
+	myReturnStep.setElementName(theElementName)
+	myReturnStep.setMillisecondsBetweenRetries(theMillisecondsBetweenRetries)
+	myReturnStep.setMillisecondsWaitAfter(theMillisecondsWaitAfter)
+	myReturnStep.setTapX(theTapX)
+	myReturnStep.setTapY(theTapY)
+	myReturnStep.setTextCheck(theTextCheck)
+	return myReturnStep
+}
+
+TEST_HELPER_BUILD_TEXT_CHECK(theBottomRightX, theBottomRightY, theSearchText, theTopLeftX, theTopLeftY){
+	myReturnTextCheck := new TextCheck()
+	myReturnTextCheck.setBottomRightX(theBottomRightX)
+	myReturnTextCheck.setBottomRightY(theBottomRightY)
+	myReturnTextCheck.setSearchText(theSearchText)
+	myReturnTextCheck.setTopLeftX(theTopLeftX)
+	myReturnTextCheck.settopLeftY(theTopLeftY)
+	return myReturnTextCheck
 }
