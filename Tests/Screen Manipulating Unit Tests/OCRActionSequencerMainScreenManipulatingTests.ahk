@@ -26,12 +26,7 @@ WinMaximize, ahk_class SciTEWindow
 myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
 if (myMaximizePromptResult) {
 	CLICK_HELPER(1804, 12)
-
-	MsgBox, 4,, "Did SciTE4AutoHotkey minimize?" ; 4 = Yes/No
-	IfMsgBox Yes
-		myMinimizePromptResult := true
-	else
-		myMinimizePromptResult := false
+	myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
 }
 
 myExpect.true(myMinimizePromptResult)
