@@ -122,7 +122,7 @@ EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(theSequenceData){
 			myStepResult := EXECUTE_SEQUENCE_STEP(theSequenceData.getStepList(), myCurrentStepCounter, true)
 			if (!myStepResult) {
 				DISPLAY_MESSAGE("Failed, ending early")
-				exitapp
+				return
 			}
 		}
 	}
