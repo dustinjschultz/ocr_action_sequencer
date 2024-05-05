@@ -9,6 +9,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; Otherwise the #Include usages start acting funky.
 
 \::
+	ADD_GLOBAL_INTERRUPT_VIA_PATH("PGo Auto Trader\Desktop_SP20Tablet_APowerMirrorResumeSequenceData.txt")
+	ADD_GLOBAL_INTERRUPT_VIA_PATH("PGo Auto Trader\Desktop_SP20Tablet_PGoNewSizeRecordPopupSequenceData.txt")
 	EXECUTE_SEQUENCE_UNTIL_CAP_VIA_PATH("PGo Auto Trader\Desktop_SP20Tablet_PGoAutoTradeSequenceData.txt")
 return
 
