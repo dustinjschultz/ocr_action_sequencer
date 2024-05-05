@@ -122,7 +122,7 @@ EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(theSequenceData){
 			myStepResult := EXECUTE_SEQUENCE_STEP(theSequenceData.getStepList(), myCurrentStepCounter, true)
 			if (!myStepResult) {
 				DISPLAY_MESSAGE("Failed, ending early")
-				exitapp
+				;exitapp ; TODO: un-do this temporary comment out, make a note to change it to a return statement
 			}
 		}
 	}
@@ -153,7 +153,7 @@ HANDLE_GLOBAL_INTERRUPT_ALL(){
 	; Use this for step sequences that could occur out of order. Ex: A streaming service's "Are you still watching" popup which could appear at any time.
 	global GLOBAL_INTERUPT_SEQUENCE_DATA_LIST
 	for myIndex in GLOBAL_INTERUPT_SEQUENCE_DATA_LIST {
-		HANDLE_GLOBAL_INTERRUPT_SINGLE(CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST[myIndex])
+		HANDLE_GLOBAL_INTERRUPT_SINGLE(GLOBAL_INTERUPT_SEQUENCE_DATA_LIST[myIndex])
 	}
 }
 
