@@ -9,7 +9,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 ; Otherwise the #Include usages start acting funky.
 
 \::
-	EXECUTE_SEQUENCE_UNTIL_CAP("PGo Auto Trader\Desktop_SP20Tablet_PGoAutoTradeSequenceData.txt")
+	EXECUTE_SEQUENCE_UNTIL_CAP_VIA_PATH("PGo Auto Trader\Desktop_SP20Tablet_PGoAutoTradeSequenceData.txt")
 return
 
 0::
@@ -41,7 +41,7 @@ return
 
 	;LOAD_SEQUENCE_DATA_FROM_JSON_STRING(READ_FILE_CONTENTS("PGo Auto Trader\Laptop_PGoAutoTradeSequenceData.txt"))
 
-	EXECUTE_SEQUENCE_UNTIL_CAP("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
+	EXECUTE_SEQUENCE_UNTIL_CAP_VIA_PATH("Test\MinimizeSciTE4AutoHotkeyPlusSequenceData.txt")
 
 	;INCLUDE_FILE("test")
 return

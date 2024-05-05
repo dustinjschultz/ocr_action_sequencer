@@ -103,13 +103,10 @@ GET_PREVIOUS_STEP_ORDINAL(theCurrentStepOrdinal, theStepTotal){
 	return myReturn
 }
 
-EXECUTE_SEQUENCE_UNTIL_CAP(theSequenceDataStringRelativePath){
+EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(theSequenceData){
 	; This is the main driver operation
-
-	mySequenceDataString := READ_FILE_CONTENTS(theSequenceDataStringRelativePath)
-	mySequenceData := LOAD_SEQUENCE_DATA_FROM_JSON_STRING(mySequenceDataString)
-	myCap := mySequenceData.getSequenceLoopLimit()
-	myStepListSize := mySequenceData.getStepList().Length()
+	myCap := theSequenceData.getSequenceLoopLimit()
+	myStepListSize := theSequenceData.getStepList().Length()
 
 	mySequenceLoopCounter := 0
 
@@ -121,13 +118,19 @@ EXECUTE_SEQUENCE_UNTIL_CAP(theSequenceDataStringRelativePath){
 		while (myCurrentStepCounter < myStepListSize) {
 			myCurrentStepCounter++
 			Sleep, 100
-			myStepResult := EXECUTE_SEQUENCE_STEP(mySequenceData.getStepList(), myCurrentStepCounter, true)
+			myStepResult := EXECUTE_SEQUENCE_STEP(theSequenceData.getStepList(), myCurrentStepCounter, true)
 			if (!myStepResult) {
 				DISPLAY_MESSAGE("Failed, ending early")
 				exitapp
 			}
 		}
 	}
+}
+
+EXECUTE_SEQUENCE_UNTIL_CAP_VIA_PATH(theSequenceDataStringRelativePath){
+	mySequenceDataString := READ_FILE_CONTENTS(theSequenceDataStringRelativePath)
+	mySequenceData := LOAD_SEQUENCE_DATA_FROM_JSON_STRING(mySequenceDataString)
+	EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(mySequenceData)
 }
 
 HANDLE_GLOBAL_INTERRUPT_SINGLE(theGlobalInteruptSequenceDataRelativePath){
