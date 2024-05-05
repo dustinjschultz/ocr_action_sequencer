@@ -65,7 +65,7 @@ TEST_DOES_TEXT_CONTAIN_SKIP_LETTERS(theExpect){
 ;;;;; READ_FILE_CONTENTS ;;;;;
 TEST_READ_FILE_CONTENTS_BASIC_TEST(theExpect){
 	theExpect.label("READ_FILE_CONTENTS basic test")
-	myFilePathToRead := A_ScriptDir . "\Tests\Test Files\"
-	theExpect.equal("TestFileContents", READ_FILE_CONTENTS("TestInputFile.txt", myFilePathToRead))
+	myFilePath := A_ScriptDir . "\Tests\Test Files\"
+	theExpect.equal("TestFileContents", READ_FILE_CONTENTS("TestInputFile.txt", myFilePath))
 }
 

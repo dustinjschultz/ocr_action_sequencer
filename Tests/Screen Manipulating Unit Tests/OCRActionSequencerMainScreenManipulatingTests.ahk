@@ -29,11 +29,12 @@ myExpect.fullReport()
 
 ;;;;; CLICK_HELPER ;;;;;
 TEST_CLICK_HELPER_BASIC_TEST(theExpect){
-	theExpect.label("CLICK_HELPER used to minimize SciTE4AutoHotkey")
+	theExpect.label("CLICK_HELPER - minimize SciTE4AutoHotkey")
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via a raw click")
 
-	myMaximizePromptResultForClickHelper := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
-	if (myMaximizePromptResultForClickHelper) {
+	myMinimizePromptResult ; declare outside the conditional so it has a result for the assertion
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	if (myMaximizePromptResult) {
 		CLICK_HELPER(1804, 12)
 		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
 	}
@@ -47,16 +48,15 @@ TEST_EXECUTE_SEQUENCE_STEP_BASIC_TEST(theExpect){
 	theExpect.label("EXECUTE_SEQUENCE_STEP - minimize SciTE4AutoHotkey sequence")
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via a Sequence")
 
-	myActionSequenceMinimizePromptResult := false
-	myMaximizePromptResultForExecuteStepSequence := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
-
-	if(myMaximizePromptResultForExecuteStepSequence){
-		myTestSequenceDataForExecuteStepSequence := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1, 10, 10, 1])
-		EXECUTE_SEQUENCE_STEP(myTestSequenceDataForExecuteStepSequence.getStepList(), 1, true)
-		myActionSequenceMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
+	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	if (myMaximizePromptResult) {
+		myStepSequence := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1, 10, 10, 1])
+		EXECUTE_SEQUENCE_STEP(myStepSequence.getStepList(), 1, true)
+		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
 	}
 
-	theExpect.true(myActionSequenceMinimizePromptResult)
+	theExpect.true(myMinimizePromptResult)
 }
 
 TEST_EXECUTE_SEQUENCE_STEP_ORIGINAL_TRY_FALSE(theExpect){
@@ -69,19 +69,19 @@ TEST_EXECUTE_SEQUENCE_STEP_ORIGINAL_TRY_FALSE(theExpect){
 	; it calls to an external dependency (the image OCR part) which takes a variable amount of time.
 	; *** This test will looks it's just sitting there spinning. That's expected. ***
 
-	myMultipleAttemptsTestSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([5])
-	mySingleAttemptTestSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1])
-	mySingleAttemptTestSequenceData.getStepList()[1].getTextCheck().setSearchText("this will never be found")
-	myMultipleAttemptsTestSequenceData.getStepList()[1].getTextCheck().setSearchText("this will never be found")
+	myMultipleAttemptsSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([5])
+	mySingleAttemptSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1])
+	mySingleAttemptSequenceData.getStepList()[1].getTextCheck().setSearchText("this will never be found")
+	myMultipleAttemptsSequenceData.getStepList()[1].getTextCheck().setSearchText("this will never be found")
 
 	; don't put breakpoints in these chunks since A_TickCount would count those as processing time
 	myMultipleAttemptsStartTime := A_TickCount
-	EXECUTE_SEQUENCE_STEP(myMultipleAttemptsTestSequenceData.getStepList(), 1, true)
+	EXECUTE_SEQUENCE_STEP(myMultipleAttemptsSequenceData.getStepList(), 1, true)
 	myMultipleAttemptsEndTime := A_TickCount
 	myMultipleAttemptsDuration := myMultipleAttemptsEndTime - myMultipleAttemptsStartTime
 
 	mySingleAttemptsStartTime := A_TickCount
-	EXECUTE_SEQUENCE_STEP(mySingleAttemptTestSequenceData.getStepList(), 1, true)
+	EXECUTE_SEQUENCE_STEP(mySingleAttemptSequenceData.getStepList(), 1, true)
 	mySingleAttemptsEndTime := A_TickCount
 	mySingleAttemptsDuration := mySingleAttemptsEndTime - mySingleAttemptsStartTime
 
@@ -95,26 +95,23 @@ TEST_EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT_USES_LOOP_LIMIT(theExpect){
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button then maximize via a Sequence twice")
 
 	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
-
-	myActionSequenceTwiceMinimizePromptResult := false
-
-	if(myMaximizePromptResult){
+	if (myMaximizePromptResult) {
 		; Time to get creative again. Since all we have (at time of writing) is text-based conditionals,
 		; we really don't have a reliable way to set up a loop-able test scenario. So we'll have the sequence
 		; itself perform its own setup by having it maximize itself after minimizing. The hard part is we don't
 		; have a great way to maximize via click, since we don't know exactly where the SciTE4AutoHotkey's
 		; icon will be in the task bar because of how many things may be open... This test will assume it's
 		; the 7th because that's typically where it is with all my pins.
-		myTestSequenceDataForLoopLimit := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1, 10, 10, 1])
+		mySequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1, 10, 10, 1])
 		myWindowsTimeTextCheck := TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK()
 		myWindowsTimeStep := TEST_HELPER_BUILD_STEP([5], "SciTE4AutoHotkey icon in task bar probably", 100, 100, 700, 1050, myWindowsTimeTextCheck)
-		myTestSequenceDataForLoopLimit.getStepList().push(myWindowsTimeStep)
-		myTestSequenceDataForLoopLimit.setSEquenceLoopLimit(2)
-		EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(myTestSequenceDataForLoopLimit)
+		mySequenceData.getStepList().push(myWindowsTimeStep)
+		mySequenceData.setSEquenceLoopLimit(2)
+		EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(mySequenceData)
 	}
 
-	myMultipleMaximizeMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize, maximize, minimize, maximize?")
-	theExpect.true(myMultipleMaximizeMinimizePromptResult)
+	myMultipleMinimizeMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize, maximize, minimize, maximize?")
+	theExpect.true(myMultipleMinimizeMaximizePromptResult)
 }
 
 
@@ -123,13 +120,13 @@ TEST_EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT_USES_LOOP_LIMIT(theExpect){
 
 TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE(theCheckExistsTryLimitIntervalList){
 	; AHK gets confused when you reuse variable names sometimes that are allegedly global, so we gotta make them unique here in the tests
-	myTestMinimizeSciteSequenceData := new SequenceData()
-	myTestMinimizeSciteSequenceData.setSequenceLoopLimit(1)
-	myTestMinimizeSciteSequenceData.setStepList([])
-	myTestTextCheck := TEST_HELPER_BUILD_TEXT_CHECK(900, 20, ".*SciTE4AutoHotkey.*|.*SCiTE4AutoHotkey.*", 20, 0)
-	myTestMinimizeSciteStep := TEST_HELPER_BUILD_STEP(theCheckExistsTryLimitIntervalList, "SciTE4AutoHotkey title bar", 100, 500, 1806, 3, myTestTextCheck)
-	myTestMinimizeSciteSequenceData.getStepList().push(myTestMinimizeSciteStep)
-	return myTestMinimizeSciteSequenceData
+	mySequenceData := new SequenceData()
+	mySequenceData.setSequenceLoopLimit(1)
+	mySequenceData.setStepList([])
+	myTextCheck := TEST_HELPER_BUILD_TEXT_CHECK(900, 20, ".*SciTE4AutoHotkey.*|.*SCiTE4AutoHotkey.*", 20, 0)
+	myStep := TEST_HELPER_BUILD_STEP(theCheckExistsTryLimitIntervalList, "SciTE4AutoHotkey title bar", 100, 500, 1806, 3, myTextCheck)
+	mySequenceData.getStepList().push(myStep)
+	return mySequenceData
 }
 
 TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK(){
@@ -138,25 +135,25 @@ TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK(){
 
 ; TODO: move these helpers somewhere common, OCRActionSequencerMainTests could use them too
 TEST_HELPER_BUILD_STEP(theCheckExistsTryLimitIntervalList, theElementName, theMillisecondsBetweenRetries, theMillisecondsWaitAfter, theTapX, theTapY, theTextCheck){
-	myReturnStep := new Step()
-	myReturnStep.setCheckExistsTryLimitIntervalList(theCheckExistsTryLimitIntervalList)
-	myReturnStep.setElementName(theElementName)
-	myReturnStep.setMillisecondsBetweenRetries(theMillisecondsBetweenRetries)
-	myReturnStep.setMillisecondsWaitAfter(theMillisecondsWaitAfter)
-	myReturnStep.setTapX(theTapX)
-	myReturnStep.setTapY(theTapY)
-	myReturnStep.setTextCheck(theTextCheck)
-	return myReturnStep
+	myStep := new Step()
+	myStep.setCheckExistsTryLimitIntervalList(theCheckExistsTryLimitIntervalList)
+	myStep.setElementName(theElementName)
+	myStep.setMillisecondsBetweenRetries(theMillisecondsBetweenRetries)
+	myStep.setMillisecondsWaitAfter(theMillisecondsWaitAfter)
+	myStep.setTapX(theTapX)
+	myStep.setTapY(theTapY)
+	myStep.setTextCheck(theTextCheck)
+	return myStep
 }
 
 TEST_HELPER_BUILD_TEXT_CHECK(theBottomRightX, theBottomRightY, theSearchText, theTopLeftX, theTopLeftY){
-	myReturnTextCheck := new TextCheck()
-	myReturnTextCheck.setBottomRightX(theBottomRightX)
-	myReturnTextCheck.setBottomRightY(theBottomRightY)
-	myReturnTextCheck.setSearchText(theSearchText)
-	myReturnTextCheck.setTopLeftX(theTopLeftX)
-	myReturnTextCheck.settopLeftY(theTopLeftY)
-	return myReturnTextCheck
+	myTextCheck := new TextCheck()
+	myTextCheck.setBottomRightX(theBottomRightX)
+	myTextCheck.setBottomRightY(theBottomRightY)
+	myTextCheck.setSearchText(theSearchText)
+	myTextCheck.setTopLeftX(theTopLeftX)
+	myTextCheck.settopLeftY(theTopLeftY)
+	return myTextCheck
 }
 
 TEST_HELPER_DO_YES_NO_PROMPT(thePromptString){
