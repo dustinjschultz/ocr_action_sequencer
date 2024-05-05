@@ -1,4 +1,4 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+﻿﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
@@ -9,10 +9,11 @@ GLOBAL_BASE_DIRECTORY := "C:\git\ocr_action_sequencer"
 #Include %A_ScriptDir%\ClassDefinition_SequenceData.ahk
 #Include %A_ScriptDir%\Noncore Helpers\Misc helpers.ahk
 
+GLOBAL_INTERUPT_SEQUENCE_DATA_LIST := []
 
 CONSTANT_DEFAULT_FILE_DIRECTORY := "C:\git\ocr_action_sequencer\Sequence Data\"
 ;CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Laptop_PGoNewSizeRecordPopupSequenceData.txt"]
-CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Desktop_SP20Tablet_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Desktop_SP20Tablet_PGoNewSizeRecordPopupSequenceData.txt"]
+;CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Desktop_SP20Tablet_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Desktop_SP20Tablet_PGoNewSizeRecordPopupSequenceData.txt"]
 CONSTANT_CAPTURE_2_TEXT_EXECUTABLE_ABSOLUTE_PATH := "C:\Users\dusti\OneDrive\Desktop\Capture2Text\Capture2Text.exe"
 
 CLICK_HELPER(theXCoordinate, theYCoordinate){
@@ -121,7 +122,7 @@ EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(theSequenceData){
 			myStepResult := EXECUTE_SEQUENCE_STEP(theSequenceData.getStepList(), myCurrentStepCounter, true)
 			if (!myStepResult) {
 				DISPLAY_MESSAGE("Failed, ending early")
-				exitapp
+				;exitapp ; TODO: un-do this temporary comment out, make a note to change it to a return statement
 			}
 		}
 	}
@@ -133,29 +134,38 @@ EXECUTE_SEQUENCE_UNTIL_CAP_VIA_PATH(theSequenceDataStringRelativePath){
 	EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(mySequenceData)
 }
 
-HANDLE_GLOBAL_INTERRUPT_SINGLE(theGlobalInteruptSequenceDataRelativePath){
-	mySequenceDataString := READ_FILE_CONTENTS(theGlobalInteruptSequenceDataRelativePath)
-	mySequenceData := LOAD_SEQUENCE_DATA_FROM_JSON_STRING(mySequenceDataString)
-	myFirstStep := mySequenceData.getStepList()[1]
+HANDLE_GLOBAL_INTERRUPT_SINGLE(theGlobalInteruptSequenceData){
+	myFirstStep := theGlobalInteruptSequenceData.getStepList()[1]
 
 	myCurrentStepCounter := 0 ; we want to use 1-indexed, so start at 0 then increment right away in the loop
-	myTotalStepCount := mySequenceData.getStepList().Length()
+	myTotalStepCount := theGlobalInteruptSequenceData.getStepList().Length()
 	myCheckTextResult := CHECK_TEXT_ON_SCREEN(myFirstStep.getTextCheck().getSearchText(), myFirstStep.getMillisecondsBetweenRetries(), 1, myFirstStep.getTextCheck())
 
 	if (myCheckTextResult) {
 		while (myCurrentStepCounter <= myTotalStepCount) {
 			myCurrentStepCounter++
-			EXECUTE_SEQUENCE_STEP(mySequenceData.getStepList(), myCurrentStepCounter, true)
+			EXECUTE_SEQUENCE_STEP(theGlobalInteruptSequenceData.getStepList(), myCurrentStepCounter, true)
 		}
 	}
 }
 
 HANDLE_GLOBAL_INTERRUPT_ALL(){
 	; Use this for step sequences that could occur out of order. Ex: A streaming service's "Are you still watching" popup which could appear at any time.
-	global CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST
-	for myIndex in CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST {
-		HANDLE_GLOBAL_INTERRUPT_SINGLE(CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST[myIndex])
+	global GLOBAL_INTERUPT_SEQUENCE_DATA_LIST
+	for myIndex in GLOBAL_INTERUPT_SEQUENCE_DATA_LIST {
+		HANDLE_GLOBAL_INTERRUPT_SINGLE(GLOBAL_INTERUPT_SEQUENCE_DATA_LIST[myIndex])
 	}
+}
+
+ADD_GLOBAL_INTERRUPT_VIA_PATH(theGlobalInterruptSequenceDataStringRelativePath){
+	mySequenceDataString := READ_FILE_CONTENTS(theGlobalInterruptSequenceDataStringRelativePath)
+	mySequenceData := LOAD_SEQUENCE_DATA_FROM_JSON_STRING(mySequenceDataString)
+	ADD_GLOBAL_INTERRUPT_VIA_OBJECT(mySequenceData)
+}
+
+ADD_GLOBAL_INTERRUPT_VIA_OBJECT(theSequenceData){
+	global GLOBAL_INTERUPT_SEQUENCE_DATA_LIST
+	GLOBAL_INTERUPT_SEQUENCE_DATA_LIST.push(theSequenceData)
 }
 
 LOAD_SEQUENCE_DATA_FROM_JSON_STRING(theJsonString){
