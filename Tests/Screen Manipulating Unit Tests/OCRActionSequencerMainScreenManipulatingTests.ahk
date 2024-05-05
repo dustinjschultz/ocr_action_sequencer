@@ -104,7 +104,7 @@ myExpect.true(mySingleAttemptsDuration * 4 < myMultipleAttemptsDuration) ; multi
 
 
 ;;;;; EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT ;;;;;
-myExpect.label("EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT - minimize then maximize twice")
+myExpect.label("EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT - minimize then maximize twice via sequenceLoopLimit")
 
 MsgBox, This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button then maximize via a Sequence twice
 SetTitleMatchMode, 2 ; partial matches
@@ -130,8 +130,7 @@ if(myMaximizePromptResult){
 	myWindowsTimeTextCheck := TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK()
 	myWindowsTimeStep := TEST_HELPER_BUILD_STEP([5], "SciTE4AutoHotkey icon in task bar probably", 100, 100, 700, 1050, myWindowsTimeTextCheck)
 	myTestSequenceData.getStepList().push(myWindowsTimeStep)
-	myTestSequenceData.getStepList().push(myTestSequenceData.getStepList()[1]) ; duplicate the minimize step
-	myTestSequenceData.getStepList().push(myTestSequenceData.getStepList()[2]) ; duplicate the maximize step
+	myTestSequenceData.setSEquenceLoopLimit(2)
 	EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(myTestSequenceData)
 }
 
