@@ -82,6 +82,7 @@ myExpect.label("EXECUTE_SEQUENCE_STEP - theIsOriginalTryFlag = false to override
 ; So first we'll do a call without it overriden, then a follow-up call that we expect to take significantly
 ; less time because of less iterations. However we can't be 100% confident in the timing, since along the way
 ; it calls to an external dependency (the image OCR part) which takes a variable amount of time.
+; *** This test will looks it's just sitting there spinning. That's expected. ***
 
 myMultipleAttemptsTestSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([5])
 mySingleAttemptTestSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1])
@@ -102,8 +103,8 @@ mySingleAttemptsDuration := mySingleAttemptsEndTime - mySingleAttemptsStartTime
 myExpect.true(mySingleAttemptsDuration * 4 < myMultipleAttemptsDuration) ; multiply by one less than the actual attempts to absorb the variance of a single call
 
 
-;;;;; EXECUTE_SEQUENCE_UNTIL_CAP ;;;;;
-myExpect.label("EXECUTE_SEQUENCE_UNTIL_CAP - minimize then maximize twice")
+;;;;; EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT ;;;;;
+myExpect.label("EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT - minimize then maximize twice")
 
 MsgBox, This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button then maximize via a Sequence twice
 SetTitleMatchMode, 2 ; partial matches
@@ -129,10 +130,20 @@ if(myMaximizePromptResult){
 	myWindowsTimeTextCheck := TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK()
 	myWindowsTimeStep := TEST_HELPER_BUILD_STEP([5], "SciTE4AutoHotkey icon in task bar probably", 100, 100, 700, 1050, myWindowsTimeTextCheck)
 	myTestSequenceData.getStepList().push(myWindowsTimeStep)
-	; TODO: Make a non-path-paramter version of this method ;EXECUTE_SEQUENCE_UNTIL_CAP
+	myTestSequenceData.getStepList().push(myTestSequenceData.getStepList()[1]) ; duplicate the minimize step
+	myTestSequenceData.getStepList().push(myTestSequenceData.getStepList()[2]) ; duplicate the maximize step
+	EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(myTestSequenceData)
 }
 
-myExpect.false("TODO: finish this test and its assertions.")
+; TODO: make this a test helper to do these prompts
+MsgBox, 4,, "Did SciTE4AutoHotkey minimize, maximize, minimize, maximize?" ; 4 = Yes/No
+myMultipleMaximizeMinimizePromptResult := false
+IfMsgBox Yes
+	myMultipleMaximizeMinimizePromptResult := true
+else
+	myMultipleMaximizeMinimizePromptResult := false
+
+myExpect.true(myMultipleMaximizeMinimizePromptResult)
 
 
 myExpect.fullReport()
