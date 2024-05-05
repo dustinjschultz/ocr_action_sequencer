@@ -7,6 +7,8 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include %A_ScriptDir%\OCR Action Sequencer Main.ahk
 
 myExpect := new expect()
+TEST_CHECK_TEXT_ON_SCREEN_BASIC_TEST(myExpect)
+myExpect.fullReport()
 
 ; TODO Methods - TBD which are actually unit-testable
 ; CLICK_HELPER
@@ -20,15 +22,17 @@ myExpect := new expect()
 ; LOAD_SEQUENCE_DATA_FROM_JSON_STRING
 
 ;;;;; CHECK_TEXT_ON_SCREEN ;;;;;
-myExpect.label("CHECK_TEXT_ON_SCREEN windows time in bottom right")
-myTextCheck = new TextCheck()
-myTextCheck.setBottomRightX(1864)
-myTextCheck.setBottomRightY(1060)
-myTextCheck.setSearchText("AM|PM")
-myTextCheck.setTopLeftX(1801)
-myTextCheck.setTopLeftY(1041)
-myExpect.true(CHECK_TEXT_ON_SCREEN(myTextCheck.getSearchText(), 1, 1, myTextCheck))
+TEST_CHECK_TEXT_ON_SCREEN_BASIC_TEST(theExpect){
+	theExpect.label("CHECK_TEXT_ON_SCREEN windows time in bottom right")
+	myTextCheck = new TextCheck()
+	myTextCheck.setBottomRightX(1864)
+	myTextCheck.setBottomRightY(1060)
+	myTextCheck.setSearchText("AM|PM")
+	myTextCheck.setTopLeftX(1801)
+	myTextCheck.setTopLeftY(1041)
+	theExpect.true(CHECK_TEXT_ON_SCREEN(myTextCheck.getSearchText(), 1, 1, myTextCheck))
+}
 
 
 
-myExpect.fullReport()
+
