@@ -116,7 +116,7 @@ TEST_EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT_USES_LOOP_LIMIT(theExpect){
 }
 
 
-;;;;; HANDLE_GLOBAL_INTERRUPT_SINGLE ;;;;;
+;;;;; HANDLE_GLOBAL_INTERRUPT_* GENERAL ;;;;;
 TEST_HANDLE_GLOBAL_INTERRUPT_TEST_INTEGRATED_IN_MAIN(theExpect){
 	; For this one, we won't directly call the method being tested, rather that it's integrated into the main method
 	theExpect.label("HANDLE_GLOBAL_INTERRUPT_SINGLE - minimize interrupt during an otherwise impossible step")
