@@ -24,6 +24,7 @@ TEST_CLICK_HELPER_BASIC_TEST(myExpect)
 TEST_EXECUTE_SEQUENCE_STEP_BASIC_TEST(myExpect)
 TEST_EXECUTE_SEQUENCE_STEP_ORIGINAL_TRY_FALSE(myExpect)
 TEST_EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT_USES_LOOP_LIMIT(myExpect)
+TEST_HANDLE_GLOBAL_INTERRUPT_TEST_INTEGRATED_IN_MAIN(myExpect)
 myExpect.fullReport()
 
 
@@ -32,7 +33,7 @@ TEST_CLICK_HELPER_BASIC_TEST(theExpect){
 	theExpect.label("CLICK_HELPER - minimize SciTE4AutoHotkey")
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via a raw click")
 
-	myMinimizePromptResult ; declare outside the conditional so it has a result for the assertion
+	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
 	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
 	if (myMaximizePromptResult) {
 		CLICK_HELPER(1804, 12)
@@ -114,6 +115,34 @@ TEST_EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT_USES_LOOP_LIMIT(theExpect){
 	theExpect.true(myMultipleMinimizeMaximizePromptResult)
 }
 
+
+;;;;; HANDLE_GLOBAL_INTERRUPT_SINGLE ;;;;;
+TEST_HANDLE_GLOBAL_INTERRUPT_TEST_INTEGRATED_IN_MAIN(theExpect){
+	; For this one, we won't directly call the method being tested, rather that it's integrated into the main method
+	theExpect.label("HANDLE_GLOBAL_INTERRUPT_SINGLE - minimize interrupt during an otherwise impossible step")
+	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minize button via an interrupt sequence")
+
+	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	if (myMaximizePromptResult) {
+		myImpossibleTextCheck := TEST_HELPER_BUILD_TEXT_CHECK(1, 1, "this will never be found", 2, 2)
+		myImpossibleStep := TEST_HELPER_BUILD_STEP([1, 1], "impossible to find element", 1, 1, 1, 1, myImpossibleTextCheck)
+		myImpossibleSequenceData := new SequenceData()
+		myImpossibleSequenceData.setSequenceLoopLimit(1)
+		myImpossibleSequenceData.setStepList([])
+		myImpossibleSequenceData.getStepList().push(myImpossibleStep)
+
+		myInterruptSequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1, 1])
+		ADD_GLOBAL_INTERRUPT_VIA_OBJECT(myInterruptSequenceData)
+
+		EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(myImpossibleSequenceData)
+		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
+	}
+
+	theExpect.true(myMinimizePromptResult)
+}
+
+; TODO: basic direct test for HANDLE_GLOBAL_INTERRUPT_SINGLE
 
 
 
