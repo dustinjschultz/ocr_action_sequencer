@@ -8,6 +8,10 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 myExpect := new expect()
 TEST_CHECK_TEXT_ON_SCREEN_BASIC_TEST(myExpect)
+TEST_GET_SCREEN_TEXT_BASIC_TEST(myExpect)
+TEST_GET_PREVIOUS_STEP_ORDINAL_BASIC_TEST(myExpect)
+TEST_GET_PREVIOUS_STEP_ORDINAL_WRAP_AROUND(myExpect)
+TEST_LOAD_SEQUENCE_DATA_FROM_JSON_STRING_BASIC_TEST(myExpect)
 myExpect.fullReport()
 
 ; TODO Methods - TBD which are actually unit-testable
@@ -33,44 +37,50 @@ TEST_CHECK_TEXT_ON_SCREEN_BASIC_TEST(theExpect){
 	theExpect.true(CHECK_TEXT_ON_SCREEN(myTextCheck.getSearchText(), 1, 1, myTextCheck))
 }
 
-; TODO: put the rest of these into functions then call them above
-
 ;;;;; GET_SCREEN_TEXT ;;;;;
-myExpect.label("GET_SCREEN_TEXT windows time in bottom right")
-myResult := GET_SCREEN_TEXT(1801, 1041, 1864, 1060)
-myExpect.true(DOES_TEXT_CONTAIN(myResult, "AM|PM"))
+TEST_GET_SCREEN_TEXT_BASIC_TEST(theExpect){
+	theExpect.label("GET_SCREEN_TEXT windows time in bottom right")
+	myResult := GET_SCREEN_TEXT(1801, 1041, 1864, 1060)
+	theExpect.true(DOES_TEXT_CONTAIN(myResult, "AM|PM"))
+}
 
 
 ;;;;; GET_PREVIOUS_STEP_ORDINAL ;;;;;
-myExpect.label("GET_PREVIOUS_STEP_ORDINAL before step 9 of 10 is 8")
-myExpect.equal(8, GET_PREVIOUS_STEP_ORDINAL(9, 10)) ; the step before 9 (a non-edge value) is 8
+TEST_GET_PREVIOUS_STEP_ORDINAL_BASIC_TEST(theExpect){
+	theExpect.label("GET_PREVIOUS_STEP_ORDINAL before step 9 of 10 is 8")
+	theExpect.equal(8, GET_PREVIOUS_STEP_ORDINAL(9, 10)) ; the step before 9 (a non-edge value) is 8
+}
 
-myExpect.label("GET_PREVIOUS_STEP_ORDINAL before step 1 of 10 is 10 (wrap-around edge case test)")
-myExpect.equal(10, GET_PREVIOUS_STEP_ORDINAL(1, 10)) ; the step before 1 (the first) is the 10 (the last)
+TEST_GET_PREVIOUS_STEP_ORDINAL_WRAP_AROUND(theExpect){
+	theExpect.label("GET_PREVIOUS_STEP_ORDINAL before step 1 of 10 is 10 (wrap-around edge case test)")
+	theExpect.equal(10, GET_PREVIOUS_STEP_ORDINAL(1, 10)) ; the step before 1 (the first) is the 10 (the last)
+}
 
 
 ;;;;; LOAD_SEQUENCE_DATA_FROM_JSON_STRING ;;;;;
-myExpect.label("LOAD_SEQUENCE_DATA_FROM_JSON_STRING basic test")
-myFilePath := A_ScriptDir . "\Tests\Test Files\"
-myJsonString := READ_FILE_CONTENTS("MinimizeSciTE4AutoHotkeyPlusSequenceData.txt", myFilePath)
-myTestSequenceData := LOAD_SEQUENCE_DATA_FROM_JSON_STRING(myJsonString)
-myExpect.equal(1, myTestSequenceData.getSequenceLoopLimit())
-myExpect.equal(1, myTestSequenceData.getStepList().Length())
-myTestStep := myTestSequenceData.getStepList()[1]
-myExpect.equal("SciTE4AutoHotkey title bar", myTestStep.getElementName())
-myExpect.equal(4, myTestStep.getCheckExistsTryLimitIntervalList().Length())
-myExpect.equal(1, myTestStep.getCheckExistsTryLimitIntervalList()[1])
-myExpect.equal(10, myTestStep.getCheckExistsTryLimitIntervalList()[2])
-myExpect.equal(10, myTestStep.getCheckExistsTryLimitIntervalList()[3])
-myExpect.equal(1, myTestStep.getCheckExistsTryLimitIntervalList()[4])
-myExpect.equal(100, myTestStep.getMillisecondsBetweenRetries())
-myExpect.equal(".*SciTE4AutoHotkey.*", myTestStep.getTextCheck().getSearchText())
-myExpect.equal(20, myTestStep.getTextCheck().getTopLeftX())
-myExpect.equal(0, myTestStep.getTextCheck().getTopLeftY())
-myExpect.equal(900, myTestStep.getTextCheck().getBottomRightX())
-myExpect.equal(20, myTestStep.getTextCheck().getBottomRightY())
-myExpect.equal(1806, myTestStep.getTapX())
-myExpect.equal(3, myTestStep.getTapY())
-myExpect.equal(500, myTestStep.getMillisecondsWaitAfter())
+TEST_LOAD_SEQUENCE_DATA_FROM_JSON_STRING_BASIC_TEST(theExpect){
+	theExpect.label("LOAD_SEQUENCE_DATA_FROM_JSON_STRING basic test")
+	myFilePath := A_ScriptDir . "\Tests\Test Files\"
+	myJsonString := READ_FILE_CONTENTS("MinimizeSciTE4AutoHotkeyPlusSequenceData.txt", myFilePath)
+	myTestSequenceData := LOAD_SEQUENCE_DATA_FROM_JSON_STRING(myJsonString)
+	theExpect.equal(1, myTestSequenceData.getSequenceLoopLimit())
+	theExpect.equal(1, myTestSequenceData.getStepList().Length())
+	myTestStep := myTestSequenceData.getStepList()[1]
+	theExpect.equal("SciTE4AutoHotkey title bar", myTestStep.getElementName())
+	theExpect.equal(4, myTestStep.getCheckExistsTryLimitIntervalList().Length())
+	theExpect.equal(1, myTestStep.getCheckExistsTryLimitIntervalList()[1])
+	theExpect.equal(10, myTestStep.getCheckExistsTryLimitIntervalList()[2])
+	theExpect.equal(10, myTestStep.getCheckExistsTryLimitIntervalList()[3])
+	theExpect.equal(1, myTestStep.getCheckExistsTryLimitIntervalList()[4])
+	theExpect.equal(100, myTestStep.getMillisecondsBetweenRetries())
+	theExpect.equal(".*SciTE4AutoHotkey.*", myTestStep.getTextCheck().getSearchText())
+	theExpect.equal(20, myTestStep.getTextCheck().getTopLeftX())
+	theExpect.equal(0, myTestStep.getTextCheck().getTopLeftY())
+	theExpect.equal(900, myTestStep.getTextCheck().getBottomRightX())
+	theExpect.equal(20, myTestStep.getTextCheck().getBottomRightY())
+	theExpect.equal(1806, myTestStep.getTapX())
+	theExpect.equal(3, myTestStep.getTapY())
+	theExpect.equal(500, myTestStep.getMillisecondsWaitAfter())
+}
 
 
