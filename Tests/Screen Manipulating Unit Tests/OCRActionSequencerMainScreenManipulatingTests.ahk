@@ -18,10 +18,7 @@ myExpect := new expect()
 
 ;;;;; CLICK_HELPER ;;;;;
 myExpect.label("CLICK_HELPER used to minimize SciTE4AutoHotkey")
-; TODO: wrap into a TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY(theTestInfoForUserString)
-MsgBox, This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via a raw click
-SetTitleMatchMode, 2 ; partial matches
-WinMaximize, ahk_class SciTEWindow
+TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via a raw click")
 
 myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
 if (myMaximizePromptResult) {
@@ -34,9 +31,7 @@ myExpect.true(myMinimizePromptResult)
 
 ;;;;; EXECUTE_SEQUENCE_STEP ;;;;;
 myExpect.label("EXECUTE_SEQUENCE_STEP - minimize SciTE4AutoHotkey sequence")
-MsgBox, This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via a Sequence
-SetTitleMatchMode, 2 ; partial matches
-WinMaximize, ahk_class SciTEWindow
+TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via a Sequence")
 
 myActionSequenceMinimizePromptResult := false
 myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
@@ -80,10 +75,7 @@ myExpect.true(mySingleAttemptsDuration * 4 < myMultipleAttemptsDuration) ; multi
 
 ;;;;; EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT ;;;;;
 myExpect.label("EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT - minimize then maximize twice via sequenceLoopLimit")
-
-MsgBox, This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button then maximize via a Sequence twice
-SetTitleMatchMode, 2 ; partial matches
-WinMaximize, ahk_class SciTEWindow
+TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button then maximize via a Sequence twice")
 
 myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
 
@@ -161,4 +153,10 @@ TEST_HELPER_DO_YES_NO_PROMPT(thePromptString){
 	else
 		myReturn := false
 	return myReturn
+}
+
+TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY(theTestInfoForUserString){
+	MsgBox, %theTestInfoForUserString%
+	SetTitleMatchMode, 2 ; partial matches
+	WinMaximize, ahk_class SciTEWindow
 }
