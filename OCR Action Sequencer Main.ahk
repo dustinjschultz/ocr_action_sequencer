@@ -9,7 +9,7 @@ GLOBAL_BASE_DIRECTORY := "C:\git\ocr_action_sequencer"
 #Include %A_ScriptDir%\ClassDefinition_SequenceData.ahk
 #Include %A_ScriptDir%\Noncore Helpers\Misc helpers.ahk
 
-GLOBAL_INTERUPT_SEQUENCE_DATA_LIST := []
+GLOBAL_INTERUPT_SEQUENCE_DATA_LIST := [] ; TODO: fix typo: interRupt (missing R)
 
 CONSTANT_DEFAULT_FILE_DIRECTORY := "C:\git\ocr_action_sequencer\Sequence Data\"
 ;CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Laptop_PGoNewSizeRecordPopupSequenceData.txt"]

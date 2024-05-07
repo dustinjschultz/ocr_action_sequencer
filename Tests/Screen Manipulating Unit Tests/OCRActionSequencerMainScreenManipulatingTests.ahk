@@ -8,15 +8,6 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 myExpect := new expect()
 
-; TODO Methods
-; CLICK_HELPER - DONE
-; EXECUTE_SEQUENCE_STEP - DONE
-; EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT - DONE
-; HANDLE_GLOBAL_INTERRUPT_SINGLE
-; HANDLE_GLOBAL_INTERRUPT_ALL
-
-; TODO: after the other files have their tests tucked into methods, come back and un-verbose-ify these awful variable names
-
 ; Write the tests in their own methods then call them here because
 ; 1. to easily tell their start and end
 ; 2. so their varaibles aren't global
@@ -25,6 +16,8 @@ TEST_EXECUTE_SEQUENCE_STEP_BASIC_TEST(myExpect)
 TEST_EXECUTE_SEQUENCE_STEP_ORIGINAL_TRY_FALSE(myExpect)
 TEST_EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT_USES_LOOP_LIMIT(myExpect)
 TEST_HANDLE_GLOBAL_INTERRUPT_TEST_INTEGRATED_IN_MAIN(myExpect)
+TEST_HANDLE_GLOBAL_INTERRUPT_SINGLE_BASIC_TEST(myExpect)
+TEST_HANDLE_GLOBAL_INTERRUPT_ALL_BASIC_TEST(myExpect)
 myExpect.fullReport()
 
 
@@ -107,7 +100,7 @@ TEST_EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT_USES_LOOP_LIMIT(theExpect){
 		myWindowsTimeTextCheck := TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK()
 		myWindowsTimeStep := TEST_HELPER_BUILD_STEP([5], "SciTE4AutoHotkey icon in task bar probably", 100, 100, 700, 1050, myWindowsTimeTextCheck)
 		mySequenceData.getStepList().push(myWindowsTimeStep)
-		mySequenceData.setSEquenceLoopLimit(2)
+		mySequenceData.setSequenceLoopLimit(2)
 		EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(mySequenceData)
 	}
 
@@ -142,7 +135,44 @@ TEST_HANDLE_GLOBAL_INTERRUPT_TEST_INTEGRATED_IN_MAIN(theExpect){
 	theExpect.true(myMinimizePromptResult)
 }
 
-; TODO: basic direct test for HANDLE_GLOBAL_INTERRUPT_SINGLE
+TEST_HANDLE_GLOBAL_INTERRUPT_SINGLE_BASIC_TEST(theExpect){
+	theExpect.label("HANDLE_GLOBAL_INTERRUPT_SINGLE basic test")
+	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minize button via an interrupt sequence (directly initiated)")
+
+	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	if (myMaximizePromptResult) {
+		mySequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1])
+		HANDLE_GLOBAL_INTERRUPT_SINGLE(mySequenceData)
+		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
+	}
+
+	theExpect.true(myMinimizePromptResult)
+}
+
+TEST_HANDLE_GLOBAL_INTERRUPT_ALL_BASIC_TEST(theExpect){
+	theExpect.label("HANDLE_GLOBAL_INTERRUPT_ALL basic test")
+	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minize button the maximize via an interrupt sequence (directly initiated)")
+
+	; So this isn't great. Because we're using a global variable to maintain
+	; the interrupt list, the tests cross contaminate. So we need to clean up.
+	global GLOBAL_INTERUPT_SEQUENCE_DATA_LIST
+	GLOBAL_INTERUPT_SEQUENCE_DATA_LIST := []
+
+	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	if (myMaximizePromptResult) {
+		mySequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1])
+		myWindowsTimeTextCheck := TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK()
+		myWindowsTimeStep := TEST_HELPER_BUILD_STEP([5], "SciTE4AutoHotkey icon in task bar probably", 100, 100, 700, 1050, myWindowsTimeTextCheck)
+		mySequenceData.getStepList().push(myWindowsTimeStep)
+		ADD_GLOBAL_INTERRUPT_VIA_OBJECT(mySequenceData)
+		HANDLE_GLOBAL_INTERRUPT_ALL()
+		myMinimizeMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize then maximize?")
+	}
+
+	theExpect.true(myMinimizeMaximizePromptResult)
+}
 
 
 
@@ -181,7 +211,7 @@ TEST_HELPER_BUILD_TEXT_CHECK(theBottomRightX, theBottomRightY, theSearchText, th
 	myTextCheck.setBottomRightY(theBottomRightY)
 	myTextCheck.setSearchText(theSearchText)
 	myTextCheck.setTopLeftX(theTopLeftX)
-	myTextCheck.settopLeftY(theTopLeftY)
+	myTextCheck.setTopLeftY(theTopLeftY)
 	return myTextCheck
 }
 
