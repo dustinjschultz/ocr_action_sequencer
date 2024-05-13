@@ -18,3 +18,4 @@ Helper for the box drawing and text setting
 UI to view your sequences
 Optional toggle between software clicks and hardware clicks - so it can run on a screen without needing to be the only thing running
 Proper logging instead of DISPLAY_MESSAGE
+Fix typo in OCR Action Sequencer Main.ahk's GLOBAL_INTERUPT_SEQUENCE_DATA_LIST variable name (one "R" in "interrupt")
