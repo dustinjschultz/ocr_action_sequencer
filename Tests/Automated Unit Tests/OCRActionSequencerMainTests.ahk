@@ -5,6 +5,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #Include %A_ScriptDir%\External Dependencies\expect.ahk-master\export.ahk
 #Include %A_ScriptDir%\OCR Action Sequencer Main.ahk
+#Include %A_ScriptDir%\Tests\Test Helpers\Misc Test Helpers.ahk
 
 myExpect := new expect()
 TEST_CHECK_TEXT_ON_SCREEN_BASIC_TEST(myExpect)
@@ -14,26 +15,11 @@ TEST_GET_PREVIOUS_STEP_ORDINAL_WRAP_AROUND(myExpect)
 TEST_LOAD_SEQUENCE_DATA_FROM_JSON_STRING_BASIC_TEST(myExpect)
 myExpect.fullReport()
 
-; TODO Methods - TBD which are actually unit-testable
-; CLICK_HELPER - TODO: put into semi-automated tests
-; CHECK_TEXT_ON_SCREEN - done
-; GET_SCREEN_TEXT - done
-; EXECUTE_SEQUENCE_STEP - TODO: put into semi-automated tests
-; GET_PREVIOUS_STEP_ORDINAL - done
-; EXECUTE_SEQUENCE_UNTIL_CAP - TODO: put into semi-automated tests
-; HANDLE_GLOBAL_INTERRUPT_SINGLE - TODO: put into semi-automated tests
-; HANDLE_GLOBAL_INTERRUPT_ALL - TODO: put into semi-automated tests
-; LOAD_SEQUENCE_DATA_FROM_JSON_STRING - done
 
 ;;;;; CHECK_TEXT_ON_SCREEN ;;;;;
 TEST_CHECK_TEXT_ON_SCREEN_BASIC_TEST(theExpect){
 	theExpect.label("CHECK_TEXT_ON_SCREEN windows time in bottom right")
-	myTextCheck = new TextCheck()
-	myTextCheck.setBottomRightX(1864)
-	myTextCheck.setBottomRightY(1060)
-	myTextCheck.setSearchText("AM|PM")
-	myTextCheck.setTopLeftX(1801)
-	myTextCheck.setTopLeftY(1041)
+	myTextCheck = TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK()
 	theExpect.true(CHECK_TEXT_ON_SCREEN(myTextCheck.getSearchText(), 1, 1, myTextCheck))
 }
 
