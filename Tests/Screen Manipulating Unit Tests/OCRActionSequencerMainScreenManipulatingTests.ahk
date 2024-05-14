@@ -7,6 +7,10 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include %A_ScriptDir%\OCR Action Sequencer Main.ahk
 #Include %A_ScriptDir%\Tests\Test Helpers\Misc Test Helpers.ahk
 
+CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT := "Did SciTE4AutoHotkey maximize?"
+CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT := "Did SciTE4AutoHotkey minimize?"
+
+
 myExpect := new expect()
 
 ; Write the tests in their own methods then call them here because
@@ -24,14 +28,16 @@ myExpect.fullReport()
 
 ;;;;; CLICK_HELPER ;;;;;
 TEST_CLICK_HELPER_BASIC_TEST(theExpect){
+	global CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT
+	global CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT
 	theExpect.label("CLICK_HELPER - minimize SciTE4AutoHotkey")
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via a raw click")
 
 	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
-	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT)
 	if (myMaximizePromptResult) {
 		CLICK_HELPER(1804, 12)
-		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
+		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT)
 	}
 
 	theExpect.true(myMinimizePromptResult)
@@ -40,21 +46,25 @@ TEST_CLICK_HELPER_BASIC_TEST(theExpect){
 
 ;;;;; EXECUTE_SEQUENCE_STEP ;;;;;
 TEST_EXECUTE_SEQUENCE_STEP_BASIC_TEST(theExpect){
+	global CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT
+	global CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT
 	theExpect.label("EXECUTE_SEQUENCE_STEP - minimize SciTE4AutoHotkey sequence")
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via a Sequence")
 
 	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
-	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT)
 	if (myMaximizePromptResult) {
 		myStepSequence := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1, 10, 10, 1])
 		EXECUTE_SEQUENCE_STEP(myStepSequence.getStepList(), 1, true)
-		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
+		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT)
 	}
 
 	theExpect.true(myMinimizePromptResult)
 }
 
 TEST_EXECUTE_SEQUENCE_STEP_ORIGINAL_TRY_FALSE(theExpect){
+	global CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT
+	global CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT
 	theExpect.label("EXECUTE_SEQUENCE_STEP - theIsOriginalTryFlag = false to override checkExistsIntervalList")
 	; So this test is interesting. We don't have a perfect way to detect whether the intended behavior is happening.
 	; When theIsOriginalTryFlag = false, we expect checkExistsIntervalList to be overriden to just [1].
@@ -86,10 +96,12 @@ TEST_EXECUTE_SEQUENCE_STEP_ORIGINAL_TRY_FALSE(theExpect){
 
 ;;;;; EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT ;;;;;
 TEST_EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT_USES_LOOP_LIMIT(theExpect){
+	global CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT
+	global CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT
 	theExpect.label("EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT - minimize then maximize twice via sequenceLoopLimit")
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button then maximize via a Sequence twice")
 
-	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT)
 	if (myMaximizePromptResult) {
 		; Time to get creative again. Since all we have (at time of writing) is text-based conditionals,
 		; we really don't have a reliable way to set up a loop-able test scenario. So we'll have the sequence
@@ -112,12 +124,14 @@ TEST_EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT_USES_LOOP_LIMIT(theExpect){
 
 ;;;;; HANDLE_GLOBAL_INTERRUPT_* GENERAL ;;;;;
 TEST_HANDLE_GLOBAL_INTERRUPT_TEST_INTEGRATED_IN_MAIN(theExpect){
+	global CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT
+	global CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT
 	; For this one, we won't directly call the method being tested, rather that it's integrated into the main method
 	theExpect.label("HANDLE_GLOBAL_INTERRUPT_SINGLE - minimize interrupt during an otherwise impossible step")
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via an interrupt sequence")
 
 	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
-	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT)
 	if (myMaximizePromptResult) {
 		myImpossibleTextCheck := TEST_HELPER_BUILD_TEXT_CHECK(1, 1, "this will never be found", 2, 2)
 		myImpossibleStep := TEST_HELPER_BUILD_STEP([1, 1], "impossible to find element", 1, 1, 1, 1, myImpossibleTextCheck)
@@ -130,28 +144,32 @@ TEST_HANDLE_GLOBAL_INTERRUPT_TEST_INTEGRATED_IN_MAIN(theExpect){
 		ADD_GLOBAL_INTERRUPT_VIA_OBJECT(myInterruptSequenceData)
 
 		EXECUTE_SEQUENCE_UNTIL_CAP_VIA_OBJECT(myImpossibleSequenceData)
-		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
+		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT)
 	}
 
 	theExpect.true(myMinimizePromptResult)
 }
 
 TEST_HANDLE_GLOBAL_INTERRUPT_SINGLE_BASIC_TEST(theExpect){
+	global CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT
+	global CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT
 	theExpect.label("HANDLE_GLOBAL_INTERRUPT_SINGLE basic test")
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button via an interrupt sequence (directly initiated)")
 
 	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
-	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT)
 	if (myMaximizePromptResult) {
 		mySequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1])
 		HANDLE_GLOBAL_INTERRUPT_SINGLE(mySequenceData)
-		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey minimize?")
+		myMinimizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT)
 	}
 
 	theExpect.true(myMinimizePromptResult)
 }
 
 TEST_HANDLE_GLOBAL_INTERRUPT_ALL_BASIC_TEST(theExpect){
+	global CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT
+	global CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT
 	theExpect.label("HANDLE_GLOBAL_INTERRUPT_ALL basic test")
 	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button the maximize via an interrupt sequence (directly initiated)")
 
@@ -161,7 +179,7 @@ TEST_HANDLE_GLOBAL_INTERRUPT_ALL_BASIC_TEST(theExpect){
 	GLOBAL_INTERUPT_SEQUENCE_DATA_LIST := []
 
 	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
-	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT("Did SciTE4AutoHotkey maximize?")
+	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT)
 	if (myMaximizePromptResult) {
 		mySequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1])
 		myWindowsTimeTextCheck := TEST_HELPER_BUILD_WINDOWS_TIME_TEXT_CHECK()
