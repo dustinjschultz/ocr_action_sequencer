@@ -178,7 +178,7 @@ TEST_HANDLE_GLOBAL_INTERRUPT_ALL_BASIC_TEST(theExpect){
 	global GLOBAL_INTERUPT_SEQUENCE_DATA_LIST
 	GLOBAL_INTERUPT_SEQUENCE_DATA_LIST := []
 
-	myMinimizePromptResult := false ; declare outside the conditional so it has a result for the assertion
+	myMinimizeMaximizePromptResult := false ; declare outside the conditional so it has a result for the assertion
 	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT)
 	if (myMaximizePromptResult) {
 		mySequenceData := TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE([1])
