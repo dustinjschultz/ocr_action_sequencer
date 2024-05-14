@@ -8,7 +8,7 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 #Include %A_ScriptDir%\tests\Automated Unit Tests\MiscHelpersTests.ahk
 #Include %A_ScriptDir%\tests\Automated Unit Tests\OCRActionSequencerMainTests.ahk
 ;Include %A_ScriptDir%\tests\Automated Unit Tests\SampleTest1.ahk ; don't use this one unless testing the tests, it has an intentional fail
-
+#Include %A_ScriptDir%\tests\Screen Manipulating Unit Tests\OCRActionSequencerMainScreenManipulatingTests.ahk
 
 
 ; We need this class for one main reason: in AHK you can't be dynamic with your #Include statement.
