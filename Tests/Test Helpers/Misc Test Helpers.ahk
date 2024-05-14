@@ -4,7 +4,6 @@ SendMode Input  ; Recommended for new scripts due to its superior speed and reli
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 TEST_HELPER_BUILD_MINIMIZE_SCITE4AUTOHOTKEY_SEQUENCE(theCheckExistsTryLimitIntervalList){
-	; AHK gets confused when you reuse variable names sometimes that are allegedly global, so we gotta make them unique here in the tests
 	mySequenceData := new SequenceData()
 	mySequenceData.setSequenceLoopLimit(1)
 	mySequenceData.setStepList([])
