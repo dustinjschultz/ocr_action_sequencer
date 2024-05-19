@@ -9,11 +9,8 @@ GLOBAL_BASE_DIRECTORY := "C:\git\ocr_action_sequencer"
 #Include %A_ScriptDir%\ClassDefinition_SequenceData.ahk
 #Include %A_ScriptDir%\Noncore Helpers\Misc helpers.ahk
 
-GLOBAL_INTERUPT_SEQUENCE_DATA_LIST := [] ; TODO: fix typo: interRupt (missing R)
+GLOBAL_INTERRUPT_SEQUENCE_DATA_LIST := []
 
-CONSTANT_DEFAULT_FILE_DIRECTORY := "C:\git\ocr_action_sequencer\Sequence Data\"
-;CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Laptop_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Laptop_PGoNewSizeRecordPopupSequenceData.txt"]
-;CONSTANT_GLOBAL_INTERRUPT_SEQUENCE_DATA_RELATIVE_PATH_LIST := ["PGo Auto Trader\Desktop_SP20Tablet_APowerMirrorResumeSequenceData.txt", "PGo Auto Trader\Desktop_SP20Tablet_PGoNewSizeRecordPopupSequenceData.txt"]
 CONSTANT_CAPTURE_2_TEXT_EXECUTABLE_ABSOLUTE_PATH := "C:\Users\dusti\OneDrive\Desktop\Capture2Text\Capture2Text.exe"
 
 CLICK_HELPER(theXCoordinate, theYCoordinate){
@@ -151,9 +148,9 @@ HANDLE_GLOBAL_INTERRUPT_SINGLE(theGlobalInteruptSequenceData){
 
 HANDLE_GLOBAL_INTERRUPT_ALL(){
 	; Use this for step sequences that could occur out of order. Ex: A streaming service's "Are you still watching" popup which could appear at any time.
-	global GLOBAL_INTERUPT_SEQUENCE_DATA_LIST
-	for myIndex in GLOBAL_INTERUPT_SEQUENCE_DATA_LIST {
-		HANDLE_GLOBAL_INTERRUPT_SINGLE(GLOBAL_INTERUPT_SEQUENCE_DATA_LIST[myIndex])
+	global GLOBAL_INTERRUPT_SEQUENCE_DATA_LIST
+	for myIndex in GLOBAL_INTERRUPT_SEQUENCE_DATA_LIST {
+		HANDLE_GLOBAL_INTERRUPT_SINGLE(GLOBAL_INTERRUPT_SEQUENCE_DATA_LIST[myIndex])
 	}
 }
 
@@ -164,8 +161,8 @@ ADD_GLOBAL_INTERRUPT_VIA_PATH(theGlobalInterruptSequenceDataStringRelativePath){
 }
 
 ADD_GLOBAL_INTERRUPT_VIA_OBJECT(theSequenceData){
-	global GLOBAL_INTERUPT_SEQUENCE_DATA_LIST
-	GLOBAL_INTERUPT_SEQUENCE_DATA_LIST.push(theSequenceData)
+	global GLOBAL_INTERRUPT_SEQUENCE_DATA_LIST
+	GLOBAL_INTERRUPT_SEQUENCE_DATA_LIST.push(theSequenceData)
 }
 
 LOAD_SEQUENCE_DATA_FROM_JSON_STRING(theJsonString){
