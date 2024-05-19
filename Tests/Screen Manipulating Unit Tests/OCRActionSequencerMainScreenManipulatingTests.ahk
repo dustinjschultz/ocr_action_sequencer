@@ -171,12 +171,12 @@ TEST_HANDLE_GLOBAL_INTERRUPT_ALL_BASIC_TEST(theExpect){
 	global CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT
 	global CONST_DID_SCITE4AUTOHOTKEY_MINIMIZE_PROMPT
 	theExpect.label("HANDLE_GLOBAL_INTERRUPT_ALL basic test")
-	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button the maximize via an interrupt sequence (directly initiated)")
+	TEST_HELPER_MAXIMIZE_SCITE4AUTOHOTKEY("This test will setup by maximizing SciTE4AutoHotkey, then actually test by clicking the minimize button then maximize via an interrupt sequence (directly initiated)")
 
 	; So this isn't great. Because we're using a global variable to maintain
 	; the interrupt list, the tests cross contaminate. So we need to clean up.
-	global GLOBAL_INTERUPT_SEQUENCE_DATA_LIST
-	GLOBAL_INTERUPT_SEQUENCE_DATA_LIST := []
+	global GLOBAL_INTERRUPT_SEQUENCE_DATA_LIST
+	GLOBAL_INTERRUPT_SEQUENCE_DATA_LIST := []
 
 	myMinimizeMaximizePromptResult := false ; declare outside the conditional so it has a result for the assertion
 	myMaximizePromptResult := TEST_HELPER_DO_YES_NO_PROMPT(CONST_DID_SCITE4AUTOHOTKEY_MAXIMIZE_PROMPT)
