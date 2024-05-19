@@ -11,7 +11,7 @@ To use this, you must follow 3 steps:
 
 1. Define your main "SequenceData"
 2. Define your interrupt SequenceData's (if any)
-3. Configure the `Launcher.ahk` to use your SequenceData's
+3. Configure `Launcher.ahk` to use your SequenceData's
 
 For an example of a SequenceData, see the example in the `/Sequence Data/Test/` folder. 
 Use `/Noncore Helpers/Screen cords reader.ahk` helper to get your screen coordinates X and Y fields.
@@ -48,9 +48,9 @@ variable `%A_ScriptDir%` to find files relative to the one you're in. But where 
 unless they just happened to match the original files's. Because of this limitation, anything that needs to `#Include` another file is placed at 
 the root. The main impact is the test launcher (`ExecuteTests.ahk`) not being in the `/Tests/` folder.
 
-### Testing NOtes
+### Testing Notes
 
-The tests use an external dependency, ("expect")[https://www.autohotkey.com/boards/viewtopic.php?t=95017] (GitHub)[https://github.com/Chunjee/expect.ahk].
+The tests use an external dependency, ["expect"](https://www.autohotkey.com/boards/viewtopic.php?t=95017) [GitHub](https://github.com/Chunjee/expect.ahk).
 
 Tests are broken up into two types, each with a folder:
 - `/Automated Unit Tests/` - can reliably be ran without any setup
