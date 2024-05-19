@@ -51,6 +51,7 @@ the root. The main impact is the test launcher (`ExecuteTests.ahk`) not being in
 ### Testing Notes
 
 The tests use an external dependency, ["expect"](https://www.autohotkey.com/boards/viewtopic.php?t=95017) [GitHub](https://github.com/Chunjee/expect.ahk).
+This provides simple `assert`-like functions.
 
 Tests are broken up into two types, each with a folder:
 - `/Automated Unit Tests/` - can reliably be ran without any setup
